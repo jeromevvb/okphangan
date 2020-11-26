@@ -1,6 +1,7 @@
 // config/fire-config.js
 import firebase from "firebase/app";
 import "firebase/firestore";
+import 'firebase/auth';
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,12 +13,10 @@ const config = {
   appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-try {
+if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(config);
-} catch (err) {
-  if (!/already exists/.test(err.message)) {
-    console.error("Firebase initialization error", err.stack);
-  }
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 }
+
 
 export default firebase;
