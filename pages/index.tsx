@@ -21,6 +21,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Hidden from "@material-ui/core/Hidden";
 import Link from "@material-ui/core/Link";
 import Container from "@material-ui/core/Container";
+import Page from "../components/Page";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -87,6 +88,7 @@ const Blog = () => {
   return (
     <>
       <CssBaseline />
+
       <Container maxWidth="lg">
         <Toolbar className={classes.toolbar}>
           <Typography

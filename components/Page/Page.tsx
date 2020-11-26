@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import Head from "next/head";
 
-interface PageProps {
+export interface PageProps {
   title: string;
-  children: any;
+  children?: any;
 }
 
 const Page: React.FC<PageProps> = (props) => {
@@ -17,10 +17,6 @@ const Page: React.FC<PageProps> = (props) => {
       {children}
     </Fragment>
   );
-};
-
-Page.defaultProps = {
-  title: "OK Phangan",
 };
 
 export default Page;
