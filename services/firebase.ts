@@ -15,7 +15,7 @@ const config = {
 
 if (typeof window !== 'undefined' && !firebase.apps.length) {
   firebase.initializeApp(config);
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 }
 
 

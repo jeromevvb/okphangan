@@ -22,6 +22,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Link from "@material-ui/core/Link";
 import Container from "@material-ui/core/Container";
 import Page from "../components/Page";
+import useAuth from "../auth/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -84,6 +85,8 @@ const featuredPosts = [
 
 const Blog = () => {
   const classes = useStyles();
+
+  const { user } = useAuth();
 
   return (
     <>
