@@ -1,8 +1,14 @@
-import { Button } from "@material-ui/core";
 import React, { Fragment } from "react";
-import firebase from "../services/firebase";
-import facebookProvider from "../auth/providers/facebook";
-import googleProvider from "../auth/providers/google";
+import { FormikHelpers } from "formik";
+import * as Yup from "yup";
+import firebase from "@services/firebase";
+import facebookProvider from "@auth/providers/facebook";
+import googleProvider from "@auth/providers/google";
+import Button from "@components/Button";
+
+import Form from "@components/Form";
+import FormInputText from "@components/FormInputText";
+import FormSubmitButton from "@components/FormSubmitButton";
 
 /**
  * API RESPONSE SOCIAL
@@ -24,7 +30,34 @@ import googleProvider from "../auth/providers/google";
       signInMethod: "facebook.com"
  */
 
+const loginCredentialsSchema = Yup.object().shape({
+  email: Yup.string().defined().email().label("Email").default(""),
+});
+
+type LoginCredentialsValues = Yup.InferType<typeof loginCredentialsSchema>;
+
 const Login: React.FC = () => {
+  const initialValues: LoginCredentialsValues = loginCredentialsSchema.default();
+
+  console.log(loginCredentialsSchema, initialValues);
+
+  /**
+   *
+   * @param values
+   * @param formikHelpers
+   */
+
+  const loginWithEmail = (
+    values: LoginCredentialsValues,
+    formikHelpers: FormikHelpers<LoginCredentialsValues>
+  ) => {
+    console.log(values, formikHelpers);
+  };
+
+  /**
+   *
+   * @param providerName
+   */
   const loginWithSocial = (providerName: string) => {
     const provider =
       providerName === "facebook" ? facebookProvider : googleProvider;
@@ -71,6 +104,15 @@ const Login: React.FC = () => {
       >
         Login with google
       </Button>
+
+      {/* <Form
+        validationSchema={loginCredentialsSchema}
+        initialValues={initialValues}
+        onSubmit={loginWithEmail}
+      >
+        <FormInputText name="email" label="Your email address" />
+        <FormSubmitButton>Connexion</FormSubmitButton>
+      </Form> */}
     </Fragment>
   );
 };
