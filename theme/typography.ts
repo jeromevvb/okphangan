@@ -1,5 +1,17 @@
 import { colors } from "@material-ui/core";
 
+export default {
+  fontFamily: [
+    'Nunito',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+}
 
 // import palette from "./palette";
 

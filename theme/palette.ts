@@ -1,7 +1,19 @@
 import { colors } from "@material-ui/core";
 
-// const white = "#FFFFFF";
-// const black = "#000000";
+export default {
+  primary: {
+    // light: will be calculated from palette.primary.main,
+    main: '#84BFA4',
+    // dark: will be calculated from palette.primary.main,
+    // contrastText: will be calculated to contrast with palette.primary.main
+    contrastText:'#fff',
+  },
+  text: {
+    // secondary:'#AAAAAA',
+    // secondary:'#818181',
+  },
+}
+ 
 
 // export default {
 //   black,
