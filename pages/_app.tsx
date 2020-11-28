@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect } from "react";
-import type { AppProps /*, AppContext */ } from "next/app";
+import type { AppProps } from "next/app";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
-import theme from "@theme";
-import "../styles/globals.css";
 import AuthProvider from "@auth/AuthProvider";
+
+import theme from "../theme";
+import "../styles/globals.css";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {

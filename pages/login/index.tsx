@@ -9,6 +9,7 @@ import Button from "@components/Button";
 import Form from "@components/Form";
 import FormInputText from "@components/FormInputText";
 import FormSubmitButton from "@components/FormSubmitButton";
+import Page from "@components/Page";
 
 /**
  * API RESPONSE SOCIAL
@@ -88,7 +89,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Fragment>
+    <Page title="Be part of the community">
       <Button
         onClick={() => loginWithSocial("facebook")}
         variant="contained"
@@ -113,7 +114,7 @@ const Login: React.FC = () => {
         <FormInputText name="email" label="Your email address" />
         <FormSubmitButton>Connexion</FormSubmitButton>
       </Form> */}
-    </Fragment>
+    </Page>
   );
 };
 

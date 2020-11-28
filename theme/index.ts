@@ -7,7 +7,7 @@ import overrides from "./overrides"
 const theme = createMuiTheme({
   palette,
   typography,
-  overrides,
+  overrides, 
   shape:{
     borderRadius:10
   }
