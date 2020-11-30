@@ -3,39 +3,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 import useAuth from "../auth/useAuth";
+import WelcomeContainer from "@components/WelcomeContainer";
+import Page from "@components/Page";
+import WelcomeHeader from "@components/WelcomeHeader";
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    minHeight: "100vh",
-  },
-  left: {
-    flex: "60%",
-    minHeight: "100%",
-  },
-  right: {
-    borderLeft: `5px solid ${theme.palette.grey[900]}`,
-    flex: "40%",
-    minHeight: "100%",
-    backgroundColor: "red",
-    backgroundImage: "url(images/background-phangan.jpg)",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
-}));
+// const useStyles = makeStyles((theme) => ());
 
 const Blog = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const { user } = useAuth();
 
   return (
-    <>
-      <div className={classes.container}>
-        <div className={classes.left}></div>
-        <div className={classes.right}></div>
-      </div>
-    </>
+    <Page
+      title="Be part of our community"
+      description="We unite Phangan's people in order to create a better future for all of us"
+    >
+      <WelcomeContainer>Hello</WelcomeContainer>
+    </Page>
   );
 };
 

@@ -10,6 +10,10 @@ import Form from "@components/Form";
 import FormInputText from "@components/FormInputText";
 import FormSubmitButton from "@components/FormSubmitButton";
 import Page from "@components/Page";
+import WelcomeContainer from "@components/WelcomeContainer";
+import Title from "@components/Title";
+import Subtitle from "@components/Subtitle";
+import PageTitle from "@components/PageTitle";
 
 /**
  * API RESPONSE SOCIAL
@@ -89,24 +93,34 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Page title="Be part of the community">
-      <Button
-        onClick={() => loginWithSocial("facebook")}
-        variant="contained"
-        color="primary"
-      >
-        Login with facebook
-      </Button>
+    <Page
+      title="Login"
+      description="We unite Phangan's people in order to create a better future for all of us"
+    >
+      <WelcomeContainer HeaderProps={{ showLoginButton: false }}>
+        <PageTitle
+          title="Be part of our awesome community"
+          subtitle="We unite Phangan's people in order to create a better future for all
+          of us"
+        />
 
-      <Button
-        onClick={() => loginWithSocial("google")}
-        variant="contained"
-        color="secondary"
-      >
-        Login with google
-      </Button>
+        <Button
+          onClick={() => loginWithSocial("facebook")}
+          variant="contained"
+          color="primary"
+        >
+          Login with facebook
+        </Button>
 
-      {/* <Form
+        <Button
+          onClick={() => loginWithSocial("google")}
+          variant="contained"
+          color="secondary"
+        >
+          Login with google
+        </Button>
+
+        {/* <Form
         validationSchema={loginCredentialsSchema}
         initialValues={initialValues}
         onSubmit={loginWithEmail}
@@ -114,6 +128,7 @@ const Login: React.FC = () => {
         <FormInputText name="email" label="Your email address" />
         <FormSubmitButton>Connexion</FormSubmitButton>
       </Form> */}
+      </WelcomeContainer>
     </Page>
   );
 };

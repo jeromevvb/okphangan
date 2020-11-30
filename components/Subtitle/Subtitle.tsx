@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 const Subtitle: React.FC<SubtitleProps> = ({ children, strong = false }) => {
   const styles = useStyles({ strong });
   return (
-    <Typography variant="h5" component="h2" classes={{ root: styles.root }}>
+    <Typography variant="h6" component="h2" classes={{ root: styles.root }}>
       {children}
     </Typography>
   );

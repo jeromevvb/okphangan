@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
   stories: [
     "../components/**/*.stories.mdx",
@@ -8,4 +10,11 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-notes/register",
   ],
+  webpackFinal: async (config) => {
+    config.resolve.alias["@components"] = path.resolve(
+      __dirname,
+      "../components"
+    );
+    return config;
+  },
 };

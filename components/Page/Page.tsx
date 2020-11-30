@@ -4,7 +4,7 @@ import Head from "next/head";
 export interface PageProps {
   title: string;
   description?: string;
-  keywords?: string;
+  keywords?: Array<string>;
   children?: any;
 }
 
@@ -15,8 +15,8 @@ const Page: React.FC<PageProps> = (props) => {
     <Fragment>
       <Head>
         <title>OK PHANGAN - {title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
+        {description && <meta name="description" content={description} />}
+        {keywords && <meta name="keywords" content={keywords.join(",")} />}
       </Head>
       {children}
     </Fragment>
