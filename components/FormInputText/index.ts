@@ -1,1 +1,2 @@
-export {default } from './FormInputText';
+export {default} from './FormInputText'; 
+export * from './FormInputText'; 

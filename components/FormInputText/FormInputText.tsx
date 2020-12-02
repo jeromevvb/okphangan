@@ -1,8 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { FormikValues, useFormikContext } from "formik";
-
-// import FormErrorMessage from "./FormErrorMessage";
 import InputText, { InputTextProps } from "../InputText/InputText";
+import { Box } from "@material-ui/core";
 
 interface FormInputTextProps extends InputTextProps {
   name: string;
@@ -20,20 +19,21 @@ const FormInputText: React.FC<FormInputTextProps> = ({
     errors,
   } = useFormikContext<FormikValues>();
 
-  const isError = touched[name] && errors[name] ? true : false;
+  const isError =
+    touched.hasOwnProperty(name) && errors.hasOwnProperty(name) ? true : false;
 
   return (
-    <Fragment>
+    <Box marginBottom={2}>
       <InputText
-        onChange={handleChange(name)}
-        onBlur={handleBlur(name)}
+        onChange={handleChange}
+        onBlur={handleBlur}
         value={values[name]}
         error={isError}
-        errorMessage={errors[name] as string}
+        errorMessage={isError ? (errors[name] as string) : ""}
         name={name}
         {...restProps}
       />
-    </Fragment>
+    </Box>
   );
 };
 

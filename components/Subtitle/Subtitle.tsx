@@ -9,6 +9,8 @@ import {
 export interface SubtitleProps extends TypographyProps {
   children: any;
   strong?: boolean;
+  //https://github.com/mui-org/material-ui/issues/19512
+  component?: any;
 }
 
 const useStyles = makeStyles({
@@ -17,10 +19,17 @@ const useStyles = makeStyles({
   },
 });
 
-const Subtitle: React.FC<SubtitleProps> = ({ children, strong = false }) => {
+const Subtitle: React.FC<SubtitleProps> = (props) => {
+  const { children, strong = false, ...restProps } = props;
   const styles = useStyles({ strong });
+
   return (
-    <Typography variant="h6" component="h2" classes={{ root: styles.root }}>
+    <Typography
+      variant="h6"
+      component="h2"
+      classes={{ root: styles.root }}
+      {...restProps}
+    >
       {children}
     </Typography>
   );

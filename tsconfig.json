@@ -5,6 +5,7 @@
       "@components/*": ["components/*"],
       "@auth/*": ["auth/*"], 
       "@services/*": ["services/*"], 
+      "@models/*": ["models/*"], 
     },
     "target": "es5",
     "lib": [
@@ -30,7 +31,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx", "next.config.js"
   ],
   "exclude": [
     "node_modules"

@@ -1,7 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-
+import { useRouter } from "next/router";
 import useAuth from "../auth/useAuth";
 import WelcomeContainer from "@components/WelcomeContainer";
 import Page from "@components/Page";
@@ -11,8 +9,10 @@ import WelcomeHeader from "@components/WelcomeHeader";
 
 const Blog = () => {
   // const classes = useStyles();
-
+  const router = useRouter();
   const { user } = useAuth();
+
+  console.log(router);
 
   return (
     <Page

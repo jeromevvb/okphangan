@@ -10,7 +10,7 @@ export interface WelcomeHeaderProps {
 const useStyles = makeStyles((theme) => ({
   navbar: {
     display: "flex",
-    marginBottom: theme.spacing(8),
+    marginBottom: theme.spacing(4),
     justifyContent: "space-between",
   },
 }));

@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: "url(images/background-phangan.jpg)",
     backgroundSize: "cover",
     backgroundPosition: "center",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 

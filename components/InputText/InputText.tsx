@@ -22,15 +22,13 @@ export interface InputTextProps extends InputBaseProps {
 const CustomInput = withStyles((theme: Theme) => ({
   root: {
     "label + &": {
-      marginTop: theme.spacing(2.5),
+      marginTop: theme.spacing(0.5),
     },
   },
   input: {
     borderRadius: theme.shape.borderRadius,
-    position: "relative",
     backgroundColor: "#EBEBEB",
     border: "1px solid #EBEBEB",
-    width: "auto",
     padding: "10px 12px",
     transition: theme.transitions.create(["border-color"]),
     "&:focus": {
@@ -51,15 +49,15 @@ const InputText: React.FC<InputTextProps> = (props) => {
   } = props;
 
   return (
-    <FormControl error={error}>
-      <InputLabel shrink htmlFor={name}>
+    <div>
+      <InputLabel htmlFor={name} error={error}>
         {label}
       </InputLabel>
-      <CustomInput id={name} {...restProps} />
+      <CustomInput id={name} name={name} {...restProps} />
       {(errorMessage || helper) && (
-        <FormHelperText>{errorMessage || helper}</FormHelperText>
+        <FormHelperText error={error}>{errorMessage || helper}</FormHelperText>
       )}
-    </FormControl>
+    </div>
   );
 };
 

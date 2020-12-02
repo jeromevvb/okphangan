@@ -26,10 +26,6 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&display=swap"
             rel="stylesheet"
           />
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
           <meta name="theme-color" content={theme.palette.primary.main} />
         </Head>
         <body>
