@@ -20,11 +20,6 @@ export interface InputTextProps extends InputBaseProps {
 }
 
 const CustomInput = withStyles((theme: Theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(0.5),
-    },
-  },
   input: {
     borderRadius: theme.shape.borderRadius,
     backgroundColor: "#EBEBEB",

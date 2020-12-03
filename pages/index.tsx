@@ -10,9 +10,9 @@ import WelcomeHeader from "@components/WelcomeHeader";
 const Blog = () => {
   // const classes = useStyles();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, userLoading } = useAuth();
 
-  console.log(router);
+  console.log(userLoading, user);
 
   return (
     <Page

@@ -1,19 +1,83 @@
-import { GetServerSidePropsContext } from "next";
 import React from "react";
-import nookies from "nookies";
-import firebaseAdmin from "@services/firebaseAdmin";
-import useAuth from "@auth/useAuth";
+import UserAuthGranted from "@auth/UserAuthGranted";
+import Page from "@components/Page";
+import WelcomeContainer from "@components/WelcomeContainer";
+import { Box } from "@material-ui/core";
+import PageTitle from "@components/PageTitle";
+import Form from "@components/Form";
+import {
+  BusinessCreationValues,
+  businessCreationSchema,
+} from "@models/business";
+import { FormikHelpers } from "formik";
+import FormInputText from "@components/FormInputText";
+import FormInputUpload from "@components/FormInputUpload";
 
-interface OnboardingProps {}
+interface OnboardingProps {
+  test?: string;
+}
 
 const Onboarding: React.FC<OnboardingProps> = ({}) => {
-  const { user } = useAuth();
+  const initialValues = businessCreationSchema.default();
 
-  // if(!user){
+  const handleSubmit = (
+    values: BusinessCreationValues,
+    formikHelpers: FormikHelpers<BusinessCreationValues>
+  ) => {};
 
-  // }
+  return (
+    <UserAuthGranted role="business">
+      <Page title="Create your business page">
+        <WelcomeContainer HeaderProps={{ showLoginButton: false }}>
+          <Box maxWidth="600px">
+            <PageTitle
+              title="Let's get to know you a bit more"
+              subtitle="Provide us few details about your business"
+            />
 
-  return <div></div>;
+            <Form
+              onSubmit={handleSubmit}
+              initialValues={initialValues}
+              validationSchema={businessCreationSchema}
+            >
+              <FormInputText
+                name="name"
+                label="Name of your business"
+                fullWidth
+              />
+
+              <FormInputText
+                name="website"
+                label="Do you have a website?"
+                fullWidth
+              />
+
+              <FormInputText
+                name="phone"
+                label="Public Phone number"
+                fullWidth
+              />
+
+              <FormInputText
+                name="description"
+                label="A short description of your business (max 250 words)"
+                multiline
+                inputProps={{ maxLength: 250 }}
+                rows={5}
+                fullWidth
+              />
+
+              <FormInputUpload
+                name="logo"
+                label="Logo de votre business"
+                DropzoneProps={{ maxFiles: 1, accept: "image/jpeg, image/png" }}
+              />
+            </Form>
+          </Box>
+        </WelcomeContainer>
+      </Page>
+    </UserAuthGranted>
+  );
 };
 
 // export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

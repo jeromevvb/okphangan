@@ -1,4 +1,5 @@
-import firebase from '../../services/firebase';
+import firebase from "firebase/app";
+
 
 const provider = new firebase.auth.FacebookAuthProvider();
 
