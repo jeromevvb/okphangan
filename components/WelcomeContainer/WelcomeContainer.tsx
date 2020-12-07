@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import WelcomeHeader from "@components/WelcomeHeader";
 import { WelcomeHeaderProps } from "@components/WelcomeHeader/WelcomeHeader";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -40,8 +41,10 @@ const WelcomeContainer: React.FC<WelcomeContainerProps> = (props) => {
     <Fragment>
       <div className={classes.container}>
         <div className={classes.left}>
-          <WelcomeHeader {...HeaderProps} />
-          {children}
+          <Box maxWidth={600}>
+            <WelcomeHeader {...HeaderProps} />
+            {children}
+          </Box>
         </div>
         <div className={classes.right} />
       </div>

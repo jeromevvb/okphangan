@@ -2,7 +2,8 @@ import {
   FormControl,
   FormHelperText,
   InputBaseProps,
-  InputBase,
+  Input,
+  InputLabelProps,
   InputLabel,
   withStyles,
   Theme,
@@ -17,6 +18,7 @@ export interface InputTextProps extends InputBaseProps {
   label: string;
   name: string;
   error?: boolean;
+  InputLabelProps?: InputLabelProps;
 }
 
 const CustomInput = withStyles((theme: Theme) => ({
@@ -30,7 +32,7 @@ const CustomInput = withStyles((theme: Theme) => ({
       borderColor: lighten(theme.palette.primary.main, 0.3),
     },
   },
-}))(InputBase);
+}))(Input);
 
 const InputText: React.FC<InputTextProps> = (props) => {
   const {
@@ -39,16 +41,17 @@ const InputText: React.FC<InputTextProps> = (props) => {
     icon,
     error = false,
     errorMessage,
+    InputLabelProps = {},
     helper,
     ...restProps
   } = props;
 
   return (
     <div>
-      <InputLabel htmlFor={name} error={error}>
+      <InputLabel htmlFor={name} error={error} {...InputLabelProps}>
         {label}
       </InputLabel>
-      <CustomInput id={name} name={name} {...restProps} />
+      <CustomInput disableUnderline id={name} name={name} {...restProps} />
       {(errorMessage || helper) && (
         <FormHelperText error={error}>{errorMessage || helper}</FormHelperText>
       )}
@@ -57,5 +60,4 @@ const InputText: React.FC<InputTextProps> = (props) => {
 };
 
 //aria-describedby="my-helper-text"
-
 export default InputText;

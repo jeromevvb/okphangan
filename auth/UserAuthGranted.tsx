@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import useAuth from "./useAuth";
 import { useRouter } from "next/router";
-import Typography from "@material-ui/core/Typography";
+import { Backdrop, CircularProgress, makeStyles } from "@material-ui/core";
 
 interface UserAuthGrantedProps {
   children: any;
   role?: "business" | "member";
 }
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
   role,
@@ -14,6 +20,7 @@ const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
 }) => {
   const { user, userLoading } = useAuth();
   const router = useRouter();
+  const classes = useStyles();
 
   useEffect(() => {
     // if user is still null, means that there is not user authenticated
@@ -30,7 +37,12 @@ const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
   }, [user, userLoading]);
 
   // if user is fetching...
-  if (userLoading || !user) return <Typography>Loading...</Typography>;
+  if (userLoading || !user)
+    return (
+      <Backdrop className={classes.backdrop} open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
 
   return children;
 };

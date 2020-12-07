@@ -36,8 +36,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       </FuegoProvider>
     </Fragment>
   );
-
-  return <Component {...pageProps} />;
 };
 
 export default MyApp;

@@ -24,7 +24,7 @@ const loginCredentialsSchema = Yup.object().shape({
 type LoginCredentialsValues = Yup.InferType<typeof loginCredentialsSchema>;
 
 const Login: React.FC = () => {
-  const { locale } = useRouter();
+  const router = useRouter();
   const [userRole, setUserRole] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const initialValues: LoginCredentialsValues = loginCredentialsSchema.default();
@@ -50,8 +50,15 @@ const Login: React.FC = () => {
     try {
       const response = await auth.loginWithSocial(providerName, {
         role: userRole,
-        locale: locale as string,
+        locale: router.locale as string,
       });
+
+      // if business redirect to onboaridng
+      if (userRole === "business") {
+        return router.push("/onboarding");
+      }
+
+      router.push("/");
     } catch (error) {
       setError(error.message);
     }
@@ -63,74 +70,72 @@ const Login: React.FC = () => {
       description="We unite Phangan's people to create a better future for all of us"
     >
       <WelcomeContainer HeaderProps={{ showLoginButton: false }}>
-        <Box maxWidth="600px">
-          <PageTitle
-            title="Be part of our awesome community"
-            subtitle="We unite Phangan's people to create a better future for all
+        <PageTitle
+          title="Be part of our awesome community"
+          subtitle="We unite Phangan's people to create a better future for all
           of us"
-          />
+        />
 
-          <LoginRoleSelector
-            role={userRole}
-            onChangeRole={(role: string) => setUserRole(role)}
-          />
+        <LoginRoleSelector
+          role={userRole}
+          onChangeRole={(role: string) => setUserRole(role)}
+        />
 
-          {userRole && (
-            <Fragment>
-              <Divider spacing={4} />
+        {userRole && (
+          <Fragment>
+            <Divider spacing={4} />
 
-              {error && (
-                <Box marginBottom={2}>
-                  <Alert variant="filled" severity="error">
-                    {error}
-                  </Alert>
-                </Box>
-              )}
-
-              <Box marginBottom={4}>
-                <Subtitle strong gutterBottom>
-                  Login with your socials networks
-                </Subtitle>
-
-                <Box display="flex">
-                  <Box flex="50%" marginRight={2}>
-                    <ButtonSocial
-                      fullWidth
-                      social="facebook"
-                      onClick={() => loginWithSocial("facebook")}
-                    />
-                  </Box>
-                  <Box flex="50%">
-                    <ButtonSocial
-                      fullWidth
-                      social="google"
-                      onClick={() => loginWithSocial("google")}
-                    />
-                  </Box>
-                </Box>
+            {error && (
+              <Box marginBottom={2}>
+                <Alert variant="filled" severity="error">
+                  {error}
+                </Alert>
               </Box>
+            )}
 
+            <Box marginBottom={4}>
               <Subtitle strong gutterBottom>
-                Login with your email
+                Login with your socials networks
               </Subtitle>
 
-              <Form
-                validationSchema={loginCredentialsSchema}
-                initialValues={initialValues}
-                onSubmit={loginWithEmail}
-              >
-                <FormInputText
-                  helper="We will send you a magic link, we don't need to use password"
-                  fullWidth
-                  name="email"
-                  label="Your email address"
-                />
+              <Box display="flex">
+                <Box flex="50%" marginRight={2}>
+                  <ButtonSocial
+                    fullWidth
+                    social="facebook"
+                    onClick={() => loginWithSocial("facebook")}
+                  />
+                </Box>
+                <Box flex="50%">
+                  <ButtonSocial
+                    fullWidth
+                    social="google"
+                    onClick={() => loginWithSocial("google")}
+                  />
+                </Box>
+              </Box>
+            </Box>
 
-                <FormSubmitButton fullWidth>Connexion</FormSubmitButton>
-              </Form>
-            </Fragment>
-          )}
-        </Box>
+            <Subtitle strong gutterBottom>
+              Login with your email
+            </Subtitle>
+
+            <Form
+              validationSchema={loginCredentialsSchema}
+              initialValues={initialValues}
+              onSubmit={loginWithEmail}
+            >
+              <FormInputText
+                helper="We will send you a magic link, we don't need to use password"
+                fullWidth
+                name="email"
+                label="Your email address"
+              />
+
+              <FormSubmitButton fullWidth>Connexion</FormSubmitButton>
+            </Form>
+          </Fragment>
+        )}
       </WelcomeContainer>
     </Page>
   );

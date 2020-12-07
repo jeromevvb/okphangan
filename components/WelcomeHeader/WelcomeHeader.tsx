@@ -1,4 +1,6 @@
+import useAuth from "@auth/useAuth";
 import Button from "@components/Button";
+import UserAvatar from "@components/UserAvatar";
 import { makeStyles } from "@material-ui/core";
 import Image from "next/image";
 import React from "react";
@@ -18,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
   const { showLoginButton = true } = props;
   const classes = useStyles();
+  const { user } = useAuth();
 
   return (
     <div className={classes.navbar}>
@@ -25,17 +28,18 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
         <Image
           src="/images/logo.png"
           alt="Logo OK Phangan"
-          width={180}
+          width={200}
           height={50}
         />
       </div>
-      {showLoginButton && (
+      {showLoginButton && !user && (
         <div>
           <Button href="/login" variant="contained" color="primary">
             Join the community
           </Button>
         </div>
       )}
+      {user && <UserAvatar></UserAvatar>}
     </div>
   );
 };

@@ -79,9 +79,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   deleteButtonRoot: {
     position: "absolute",
-    top: "-15px",
-    right: "-15px",
-    fontSize: "1em",
+    top: "-10px",
+    right: "-10px",
   },
 }));
 
