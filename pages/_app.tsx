@@ -4,14 +4,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import AuthProvider from "@auth/AuthProvider";
 import { FuegoProvider } from "@nandorojo/swr-firestore";
-import { firebaseConfig, Fuego } from "@services/firebase";
+import fuego from "@services/fuego";
 import theme from "../theme";
 
-import "firebase/firestore";
-import "firebase/auth";
 import "../styles/globals.css";
-
-const fuego = new Fuego(firebaseConfig);
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {

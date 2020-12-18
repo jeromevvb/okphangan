@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import UserAuthGranted from "@auth/UserAuthGranted";
 import Page from "@components/Page";
-import WelcomeContainer from "@components/WelcomeContainer";
-import { Box } from "@material-ui/core";
+import WelcomeLayout from "@components/WelcomeLayout";
 import PageTitle from "@components/PageTitle";
 import Form from "@components/Form";
 import {
-  BusinessCreationValues,
-  businessCreationSchema,
-  createBusiness,
-} from "@models/business";
+  PlaceCreationValues,
+  placeCreationSchema,
+  createPlace,
+} from "@models/places";
 import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
 import FormInputUpload from "@components/FormInputUpload";
@@ -18,24 +17,25 @@ import GoogleMapsOnboarding from "@components/GoogleMapsOnboarding";
 import FormAutocomplete from "@components/FormAutocomplete";
 import useAuth from "@auth/useAuth";
 import { UserModel } from "@models/auth";
+import FormInputCheckbox from "@components/FormInputCheckbox";
+import FormShowIf from "@components/FormShowIf";
 
 interface OnboardingProps {
   test?: string;
 }
 
 const Onboarding: React.FC<OnboardingProps> = ({}) => {
-  const initialValues = businessCreationSchema.default();
-  // const [error, setError] = useState()
+  const initialValues = placeCreationSchema.default();
   const { user } = useAuth();
 
   const handleSubmit = async (
-    values: BusinessCreationValues,
-    formikHelpers: FormikHelpers<BusinessCreationValues>
+    values: PlaceCreationValues,
+    formikHelpers: FormikHelpers<PlaceCreationValues>
   ) => {
     try {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
-      const response = await createBusiness(user as UserModel, values);
+      const response = await createPlace(user as UserModel, values);
 
       formikHelpers.setSubmitting(false);
     } catch (error) {
@@ -47,7 +47,10 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
   return (
     <UserAuthGranted role="business">
       <Page title="Create your business page">
-        <WelcomeContainer HeaderProps={{ showLoginButton: false }}>
+        <WelcomeLayout
+          fluidLeft={false}
+          HeaderProps={{ showLoginButton: false }}
+        >
           <PageTitle
             displayBackButton={false}
             title="Let's get to know you a bit more"
@@ -57,7 +60,7 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
           <Form
             onSubmit={handleSubmit}
             initialValues={initialValues}
-            validationSchema={businessCreationSchema}
+            validationSchema={placeCreationSchema}
           >
             <FormInputText
               name="name"
@@ -71,13 +74,14 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
               fullWidth
             />
 
-            <FormInputText name="phone" label="Public Phone number" fullWidth />
+            <FormInputText name="phone" label="Public phone number" fullWidth />
 
             <FormAutocomplete
-              name="type"
+              name="category"
+              fullWidth
               options={[{ label: "Restaurant", value: "restaurant" }]}
-              label="Type of business"
-            ></FormAutocomplete>
+              label="Category of your business"
+            />
 
             <FormInputText
               name="description"
@@ -94,16 +98,23 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
               DropzoneProps={{ maxFiles: 1, accept: "image/jpeg, image/png" }}
             />
 
-            <GoogleMapsOnboarding
-              label="Indicate where is located your business by clicking on the map"
-              name="geocoding"
+            <FormInputCheckbox
+              name="hasGeocoding"
+              label="My business has a physical address"
             />
+
+            <FormShowIf fieldName="hasGeocoding" is={true}>
+              <GoogleMapsOnboarding
+                label="Indicate where is located your business by clicking on the map"
+                name="geocoding"
+              />
+            </FormShowIf>
 
             <FormSubmitButton fullWidth>
               create my business page
             </FormSubmitButton>
           </Form>
-        </WelcomeContainer>
+        </WelcomeLayout>
       </Page>
     </UserAuthGranted>
   );

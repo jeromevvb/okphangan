@@ -1,6 +1,5 @@
 import facebookProvider from '../auth/providers/facebook';
 import googleProvider from '../auth/providers/google';
-import slug from 'limax';
 import firebase from "firebase/app";
 
 export type UserModel = {

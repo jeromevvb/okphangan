@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import useAuth from "../auth/useAuth";
-import WelcomeContainer from "@components/WelcomeContainer";
+import WelcomeLayout from "@components/WelcomeLayout";
 import Page from "@components/Page";
 import WelcomeHeader from "@components/WelcomeHeader";
 
@@ -19,7 +19,7 @@ const Blog = () => {
       title="Be part of our community"
       description="We unite Phangan's people in order to create a better future for all of us"
     >
-      <WelcomeContainer>Hello</WelcomeContainer>
+      <WelcomeLayout>Hello</WelcomeLayout>
     </Page>
   );
 };

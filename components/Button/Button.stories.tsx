@@ -16,6 +16,14 @@ PrimaryContained.args = {
   color: "primary",
 };
 
+export const Loader = Template.bind({});
+Loader.args = {
+  children: "Click on me",
+  variant: "contained",
+  color: "primary",
+  loader: true,
+};
+
 export default {
   title: "Button",
   parameters: {

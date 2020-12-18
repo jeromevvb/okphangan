@@ -2,7 +2,7 @@ import ButtonRadios from "@components/ButtonRadios";
 import { Box } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
-import React, { useState } from "react";
+import React from "react";
 
 interface LoginRoleSelectorProps {
   onChangeRole(role: string): void;
@@ -14,8 +14,8 @@ const LoginRoleSelector: React.FC<LoginRoleSelectorProps> = ({
   onChangeRole,
 }) => {
   const options = [
-    { label: "I live here or i'm a Tourist", value: "member" },
-    { label: "I'm a business owner", value: "business" },
+    { label: "I live here or i'm a tourist", value: "member" },
+    { label: "I have a business or i'm a freelancer", value: "business" },
   ];
 
   return (

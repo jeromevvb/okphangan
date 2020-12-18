@@ -12,7 +12,14 @@ interface FormSubmitButton extends ButtonProps {
 const FormSubmitButton: React.FC<FormSubmitButton> = (props) => {
   const { children, disabledIfInvalid = true, ...restProps } = props;
 
-  const { handleSubmit, isValid, dirty, status } = useFormikContext();
+  const {
+    handleSubmit,
+    isValid,
+    dirty,
+    status,
+    errors,
+    isSubmitting,
+  } = useFormikContext();
   const disabled = disabledIfInvalid ? !isValid || !dirty : false;
 
   return (
@@ -27,6 +34,7 @@ const FormSubmitButton: React.FC<FormSubmitButton> = (props) => {
 
       <Button
         {...restProps}
+        loader={isSubmitting}
         variant="contained"
         color="primary"
         disabled={disabled}

@@ -3,7 +3,7 @@ import { FormikHelpers } from "formik";
 import * as Yup from "yup";
 
 import Page from "@components/Page";
-import WelcomeContainer from "@components/WelcomeContainer";
+import WelcomeLayout from "@components/WelcomeLayout";
 import PageTitle from "@components/PageTitle";
 import { Box } from "@material-ui/core";
 import LoginRoleSelector from "widgets/LoginRoleSelector";
@@ -69,7 +69,7 @@ const Login: React.FC = () => {
       title="Login"
       description="We unite Phangan's people to create a better future for all of us"
     >
-      <WelcomeContainer HeaderProps={{ showLoginButton: false }}>
+      <WelcomeLayout fluidLeft={false} HeaderProps={{ showLoginButton: false }}>
         <PageTitle
           title="Be part of our awesome community"
           subtitle="We unite Phangan's people to create a better future for all
@@ -136,7 +136,7 @@ const Login: React.FC = () => {
             </Form>
           </Fragment>
         )}
-      </WelcomeContainer>
+      </WelcomeLayout>
     </Page>
   );
 };

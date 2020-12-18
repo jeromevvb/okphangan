@@ -28,20 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface WelcomeContainerProps {
+export interface WelcomeLayoutProps {
   children: any;
+  fluidLeft?: boolean;
   HeaderProps?: WelcomeHeaderProps;
 }
 
-const WelcomeContainer: React.FC<WelcomeContainerProps> = (props) => {
-  const { children, HeaderProps } = props;
+const WelcomeLayout: React.FC<WelcomeLayoutProps> = (props) => {
+  const { children, HeaderProps, fluidLeft = true } = props;
   const classes = useStyles();
 
   return (
     <Fragment>
       <div className={classes.container}>
         <div className={classes.left}>
-          <Box maxWidth={600}>
+          <Box maxWidth={fluidLeft ? "100%" : 600} margin="auto">
             <WelcomeHeader {...HeaderProps} />
             {children}
           </Box>
@@ -52,4 +53,4 @@ const WelcomeContainer: React.FC<WelcomeContainerProps> = (props) => {
   );
 };
 
-export default WelcomeContainer;
+export default WelcomeLayout;

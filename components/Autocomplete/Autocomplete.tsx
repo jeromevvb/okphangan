@@ -4,6 +4,7 @@ import InputText from "@components/InputText";
 import useAutocomplete from "@material-ui/lab/useAutocomplete";
 import { Box, createStyles, makeStyles, Paper, Theme } from "@material-ui/core";
 import BodyText from "@components/BodyText";
+import { InputTextProps } from "@components/InputText/InputText";
 
 export interface Option {
   inputValue?: string;
@@ -13,7 +14,7 @@ export interface Option {
 }
 
 export interface AutocompleteProps {
-  label: string;
+  InputProps: InputTextProps;
   value: Option | undefined;
   options: Array<Option>;
   onChange(option: Option): void;
@@ -48,7 +49,12 @@ const useStyles = makeStyles((theme: Theme) =>
 const filter = createFilterOptions<Option>();
 
 const Autocomplete: React.FC<AutocompleteProps> = (props) => {
-  const { label, onChange: handleChange, options, value: defaultValue } = props;
+  const {
+    onChange: handleChange,
+    options,
+    value: defaultValue,
+    InputProps,
+  } = props;
   const classes = useStyles();
   const [value, setValue] = useState<Option | undefined>(defaultValue);
 
@@ -64,59 +70,27 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
     options,
     selectOnFocus: true,
     clearOnBlur: true,
-    freeSolo: true,
     handleHomeEndKeys: true,
     getOptionLabel: (option) => {
-      // Value selected with enter, right from the input
-      if (typeof option === "string") {
-        return option;
-      }
-      // Add "xxx" option created dynamically
-      if (option.inputValue) {
-        return option.inputValue;
-      }
       // Regular option
       return option.label;
     },
     onChange: (event, newValue: Option) => {
-      if (newValue && newValue.inputValue) {
-        const returnedValue = {
-          label: newValue.inputValue,
-          value: newValue.value,
-          new: true,
-        };
-        // Create a new value from the user input
-        handleChange(returnedValue);
-      } else {
-        handleChange(newValue);
-      }
+      if (newValue === null) return;
+      handleChange(newValue);
     },
     filterOptions: (options, params) => {
-      const filtered = filter(options, params);
-
-      // Suggest the creation of a new value
-      if (params.inputValue !== "") {
-        filtered.push({
-          inputValue: params.inputValue,
-          value: params.inputValue,
-          label: `Add "${params.inputValue}"`,
-          new: true,
-        });
-      }
-
-      return filtered;
+      return filter(options, params);
     },
   });
 
   return (
-    <Box style={{ position: "relative" }} marginBottom={2}>
+    <Box position="relative" marginBottom={2}>
       <div {...getRootProps()}>
         <InputText
           InputLabelProps={getInputLabelProps()}
-          name={name}
-          fullWidth
           inputProps={getInputProps()}
-          label={label}
+          {...InputProps}
         />
       </div>
       {groupedOptions.length > 0 && (

@@ -14,7 +14,7 @@ const Page: React.FC<PageProps> = (props) => {
   return (
     <Fragment>
       <Head>
-        <title>OK PHANGAN - {title}</title>
+        <title>{title} - OKPhangan</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"

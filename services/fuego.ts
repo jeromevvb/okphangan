@@ -1,4 +1,6 @@
 import firebase from 'firebase/app'
+import "firebase/firestore";
+import "firebase/auth";
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,7 +14,7 @@ export const firebaseConfig = {
 
 type Config = Parameters<typeof firebase.initializeApp>[0]
 
-export class Fuego {
+class Fuego {
   public db: ReturnType<firebase.app.App['firestore']>
   public auth: typeof firebase.auth
   public functions: typeof firebase.functions
@@ -27,9 +29,7 @@ export class Fuego {
   }
 }
 
-// if (typeof window !== 'undefined' && !firebase.apps.length) {
-//   // firebase.initializeApp(config);
-// }
 
+const fuego = new Fuego(firebaseConfig);
 
-// export default firebase;
+export default fuego;

@@ -27,7 +27,7 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
       <div>
         <Image
           src="/images/logo.png"
-          alt="Logo OK Phangan"
+          alt="Logo OKPhangan"
           width={200}
           height={50}
         />
