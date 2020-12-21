@@ -25,6 +25,7 @@ export type PlaceCreationValues = Yup.InferType<typeof placeCreationSchema>;
 export type PlaceModel = PlaceCreationValues & {
   createdAt:firebase.firestore.Timestamp,
   userId:string,
+  logoUrl?:string,
   slug:string
 };
 
@@ -35,13 +36,16 @@ export type PlaceModel = PlaceCreationValues & {
  */
 
 const createPlace = async (user:UserModel, placeForm:PlaceCreationValues) => {
-  
+  // create slug 
+  const slug = makeSlug(placeForm.name, { separateNumbers: true, separateApostrophes: true });
+
   // extract logo and complete form
   const form:PlaceModel = {
     ...placeForm, 
     createdAt:firebase.firestore.Timestamp.now(), 
     userId:user.uid,
-    slug:makeSlug(placeForm.name, { separateNumbers: true, separateApostrophes: true })
+    logoUrl:'',
+    slug
   };
   delete form.logo;
 
@@ -55,9 +59,16 @@ const createPlace = async (user:UserModel, placeForm:PlaceCreationValues) => {
     //TODO:SOLVE THIS PROBLEM OF TS
     // @ts-ignore
     await storageRef.put(placeForm?.logo[0]);
+    const logoUrl = await storageRef.getDownloadURL();
+ 
+    // update business with logoUrl
+    await firebase.firestore().collection("places").doc(businessId).update({logoUrl})
   }
 
+  // user is now onboarded
+  await firebase.firestore().collection("users").doc(user.uid).update({onboarded:true});
 
+  return slug;
 }
 
 export {createPlace}

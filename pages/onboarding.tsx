@@ -13,12 +13,13 @@ import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
 import FormInputUpload from "@components/FormInputUpload";
 import FormSubmitButton from "@components/FormSubmitButton";
-import GoogleMapsOnboarding from "@components/GoogleMapsOnboarding";
 import FormAutocomplete from "@components/FormAutocomplete";
 import useAuth from "@auth/useAuth";
 import { UserModel } from "@models/auth";
 import FormInputCheckbox from "@components/FormInputCheckbox";
 import FormShowIf from "@components/FormShowIf";
+import FormGoogleMaps from "@components/FormGoogleMaps";
+import { useRouter } from "next/router";
 
 interface OnboardingProps {
   test?: string;
@@ -26,6 +27,7 @@ interface OnboardingProps {
 
 const Onboarding: React.FC<OnboardingProps> = ({}) => {
   const initialValues = placeCreationSchema.default();
+  const router = useRouter();
   const { user } = useAuth();
 
   const handleSubmit = async (
@@ -35,8 +37,9 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
     try {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
-      const response = await createPlace(user as UserModel, values);
-
+      const slug = await createPlace(user as UserModel, values);
+      // redirect
+      router.push(`/places/${slug}`);
       formikHelpers.setSubmitting(false);
     } catch (error) {
       formikHelpers.setStatus({ error: error.message });
@@ -104,7 +107,7 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
             />
 
             <FormShowIf fieldName="hasGeocoding" is={true}>
-              <GoogleMapsOnboarding
+              <FormGoogleMaps
                 label="Indicate where is located your business by clicking on the map"
                 name="geocoding"
               />
