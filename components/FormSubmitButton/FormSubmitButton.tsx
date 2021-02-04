@@ -21,7 +21,6 @@ const FormSubmitButton: React.FC<FormSubmitButton> = (props) => {
     isSubmitting,
   } = useFormikContext();
   const disabled = disabledIfInvalid ? !isValid || !dirty : false;
-  console.log(disabled);
 
   return (
     <Fragment>

@@ -13,12 +13,11 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core";
-import Title from "@components/Title";
-import GoogleMaps from "@components/GoogleMaps";
 import Card from "@components/Card/Card";
-import Subtitle from "@components/Subtitle";
-import Button from "@components/Button";
 import Image from "next/image";
+import Geolocation from "widgets/place/Geolocation";
+import Subtitle from "@components/Subtitle";
+import Title from "@components/Title";
 
 export interface PlaceProps {
   place: PlaceModel;
@@ -84,36 +83,17 @@ const Place: React.FC<PlaceProps> = (props) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={8}>
-            <Box marginBottom={2}>
+            <Box marginBottom={4}>
               <Subtitle>{place.description}</Subtitle>
             </Box>
 
-            <Card
-              title="Pictures"
-              // headerAction={<Button color="primary">See on Google Maps</Button>}
-            ></Card>
+            <Card title="Pictures" />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card
-              paddingContent={false}
-              title="Localisation"
-              headerAction={
-                <Button
-                  color="primary"
-                  externalHref
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${place.geocoding?.lat},${place.geocoding?.lng}&travelmode=driving`}
-                >
-                  Take me there
-                </Button>
-              }
-            >
-              <GoogleMaps
-                readonly
-                defaultMarker={place.geocoding}
-                containerHeight={400}
-              />
-            </Card>
-          </Grid>
+          {place.hasGeocoding && (
+            <Grid item xs={12} sm={6} md={4}>
+              <Geolocation geocoding={place.geocoding}></Geolocation>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </Page>

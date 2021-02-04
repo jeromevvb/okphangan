@@ -1,0 +1,255 @@
+[
+  { "blog": [{ "content": "test2\n", "title": "trest" }] },
+  {
+    "categories": [
+      {
+        "tags": [
+          "bar",
+          "restaurant",
+          "beach front",
+          "sea view",
+          "swimming pool",
+          "lounge",
+          "romantic",
+          "family",
+          "friends",
+          "jungle"
+        ],
+        "label": "Accomodation",
+        "types": ["hotel", "bungalow", "resort"]
+      },
+      {
+        "types": [
+          "paintball",
+          "thai boxing",
+          "diving",
+          "snorkeling",
+          "kiteboarding",
+          "wakeboard",
+          "kayak",
+          "jet ski",
+          "fishing",
+          "trekking",
+          "cooking class",
+          "ATV",
+          "football",
+          "tennis",
+          "arrow",
+          "elephant trekking",
+          "animal show",
+          "boat excursion",
+          "jungle trip",
+          "bicyle",
+          "fight sports"
+        ],
+        "label": "Activities"
+      },
+      { "label": "Education", "types": ["language", "kids"] },
+      { "label": "Freelance", "types": ["IT", "Wellness", "hospitality"] },
+      {
+        "label": "Healthcare",
+        "types": [
+          "police",
+          "tourist police",
+          "hospital",
+          "docgtor",
+          "dental",
+          "pharmacy"
+        ]
+      },
+      {
+        "tags": ["techno", "psy trance", "electro"],
+        "types": [
+          "jungle",
+          "oxa beach",
+          "halfmoon",
+          "lost paradise",
+          "wai nam"
+        ],
+        "label": "Nightlife"
+      },
+      {
+        "types": ["cars", "motorbikes", "bicycle", "accomodation", "AVT"],
+        "label": "Rentals"
+      },
+      {
+        "label": "Services",
+        "types": [
+          "post office",
+          "visa",
+          "lawyer",
+          "IT",
+          "printing",
+          "keys",
+          "building material",
+          "electrician",
+          "plumbeer",
+          "bank",
+          "20bath shop",
+          "construction",
+          "water gvt",
+          "pea electric"
+        ]
+      },
+      {
+        "label": "Shopping",
+        "types": [
+          "clothing",
+          "jewellery",
+          "art",
+          "handcraft",
+          "second hand",
+          "supermarket",
+          "minimarket",
+          "souvenirs"
+        ],
+        "tags": ["natural", "bio", "handmade"]
+      },
+      {
+        "tags": [
+          "thai",
+          "western",
+          "pub",
+          "delivery",
+          "resort",
+          "hotel",
+          "italian",
+          "french"
+        ],
+        "types": ["market", "restaurant", "bars", "coffee shop", "juice bar"],
+        "label": "Food and Drinks"
+      },
+      {
+        "types": [
+          "massage",
+          "spa",
+          "reiki",
+          "yoga",
+          "detox",
+          "meditation",
+          "wellness center"
+        ],
+        "label": "Wellness"
+      }
+    ]
+  },
+  {
+    "places": [
+      {
+        "slug": "la-casa-de-paintball",
+        "geocoding": { "lng": 100.01328113894641, "lat": 9.721214742226197 },
+        "description": "44444",
+        "name": "La casa de paintball",
+        "category": "restaurant",
+        "phone": "98884444",
+        "createdAt": { "_seconds": 1608201221, "_nanoseconds": 806000000 },
+        "userId": "ptI2ZPNRPgN2U26uLWRFKlAumU22",
+        "website": "",
+        "hasGeocoding": true
+      },
+      {
+        "geocoding": { "lat": 9.719402423406706, "lng": 100.01085403157633 },
+        "slug": "hello",
+        "category": "restaurant",
+        "name": "hello",
+        "description": "44444444444444",
+        "createdAt": { "_seconds": 1608554496, "_nanoseconds": 28000000 },
+        "website": "no",
+        "userId": "ptI2ZPNRPgN2U26uLWRFKlAumU22",
+        "hasGeocoding": true,
+        "phone": "99999444444",
+        "logoUrl": "https://firebasestorage.googleapis.com/v0/b/okphangan-cab71.appspot.com/o/places%2FK93PYz420Q3dq4zDMr7h%2Flogo?alt=media&token=2d45a0e9-1b56-42db-a89c-b2bbe05b037b"
+      },
+      {
+        "name": "abc",
+        "logoUrl": "https://firebasestorage.googleapis.com/v0/b/okphangan-cab71.appspot.com/o/places%2FZa8jHtYQqGZI65eP9Zjy%2Flogo?alt=media&token=35bdb470-1dee-4a94-a2b4-73ff27c7fca3",
+        "slug": "abc",
+        "geocoding": { "lat": 9.739337389998106, "lng": 100.00202819475626 },
+        "userId": "ptI2ZPNRPgN2U26uLWRFKlAumU22",
+        "hasGeocoding": true,
+        "createdAt": { "_seconds": 1608536139, "_nanoseconds": 354000000 },
+        "website": "abc",
+        "category": "restaurant",
+        "description": "asdfasdgsg",
+        "phone": "66666666"
+      },
+      {
+        "logoUrl": "",
+        "geocoding": { "lat": 9.735978734970914, "lng": 100.00644111316632 },
+        "phone": "346436366363",
+        "hasGeocoding": true,
+        "slug": "abc",
+        "category": "restaurant",
+        "createdAt": { "_seconds": 1608554676, "_nanoseconds": 321000000 },
+        "userId": "ptI2ZPNRPgN2U26uLWRFKlAumU22",
+        "name": "ABC",
+        "website": "asdfasf",
+        "description": "46dsgsadgsadgsadg"
+      }
+    ]
+  },
+  {
+    "users": [
+      {
+        "locale": "en",
+        "lastName": "Van Vlierbergen",
+        "createdAt": { "_seconds": 1607399618, "_nanoseconds": 566000000 },
+        "onboarded": false,
+        "displayName": "Jérôme Van Vlierbergen",
+        "email": "jeromevvb@gmail.com",
+        "uid": "2g2tSAf8z7SIKIyEarBIB4NYKAB2",
+        "photoURL": "https://graph.facebook.com/10158719289887302/picture",
+        "role": "business",
+        "firstName": "Jérôme",
+        "subscription": {
+          "plan": "free",
+          "createdAt": { "_seconds": 1607399618, "_nanoseconds": 567000000 }
+        }
+      },
+      {
+        "photoURL": "https://graph.facebook.com/10158719289887302/picture",
+        "email": "jeromevvb@gmail.com",
+        "lastName": "Van Vlierbergen",
+        "createdAt": { "_seconds": 1607235134, "_nanoseconds": 980000000 },
+        "displayName": "Jérôme Van Vlierbergen",
+        "role": "business",
+        "firstName": "Jérôme",
+        "onboarded": false,
+        "locale": "en",
+        "uid": "GfOCrTLHA1X2fvOBtmrDmXGxWei2"
+      },
+      {
+        "uid": "JC8WMHEtQ7SlrUwW7dkkJZMdZip1",
+        "photoURL": "https://graph.facebook.com/10158719289887302/picture",
+        "firstName": "Jérôme",
+        "createdAt": { "_seconds": 1608187112, "_nanoseconds": 728000000 },
+        "email": "jeromevvb@gmail.com",
+        "role": "member",
+        "lastName": "Van Vlierbergen",
+        "subscription": {
+          "createdAt": { "_seconds": 1608187112, "_nanoseconds": 729000000 },
+          "plan": "free"
+        },
+        "displayName": "Jérôme Van Vlierbergen",
+        "onboarded": false,
+        "locale": "en"
+      },
+      {
+        "email": "jeromevvb@gmail.com",
+        "role": "business",
+        "onboarded": true,
+        "firstName": "Jérôme",
+        "displayName": "Jérôme Van Vlierbergen",
+        "locale": "en",
+        "lastName": "Van Vlierbergen",
+        "uid": "ptI2ZPNRPgN2U26uLWRFKlAumU22",
+        "subscription": {
+          "createdAt": { "_seconds": 1608187194, "_nanoseconds": 955000000 },
+          "plan": "free"
+        },
+        "photoURL": "https://graph.facebook.com/10158719289887302/picture",
+        "createdAt": { "_seconds": 1608187194, "_nanoseconds": 955000000 }
+      }
+    ]
+  }
+]

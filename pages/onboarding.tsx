@@ -20,6 +20,9 @@ import FormInputCheckbox from "@components/FormInputCheckbox";
 import FormShowIf from "@components/FormShowIf";
 import FormGoogleMaps from "@components/FormGoogleMaps";
 import { useRouter } from "next/router";
+import { useCollection, useDocument } from "@nandorojo/swr-firestore";
+import useCategories from "@hooks/useCategories";
+import FormCategory from "widgets/onboarding/FormCategory";
 
 interface OnboardingProps {
   test?: string;
@@ -79,12 +82,7 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
 
             <FormInputText name="phone" label="Public phone number" fullWidth />
 
-            <FormAutocomplete
-              name="category"
-              fullWidth
-              options={[{ label: "Restaurant", value: "restaurant" }]}
-              label="Category of your business"
-            />
+            <FormCategory></FormCategory>
 
             <FormInputText
               name="description"

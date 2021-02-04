@@ -6,7 +6,7 @@ import Page from "@components/Page";
 import WelcomeLayout from "@components/WelcomeLayout";
 import PageTitle from "@components/PageTitle";
 import { Box } from "@material-ui/core";
-import LoginRoleSelector from "widgets/LoginRoleSelector";
+import RoleSelector from "widgets/login/RoleSelector";
 import ButtonSocial from "@components/ButtonSocial";
 import Divider from "@components/Divider";
 import Form from "@components/Form";
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
           of us"
         />
 
-        <LoginRoleSelector
+        <RoleSelector
           role={userRole}
           onChangeRole={(role: string) => setUserRole(role)}
         />

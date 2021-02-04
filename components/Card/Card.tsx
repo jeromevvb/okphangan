@@ -18,8 +18,8 @@ export interface CardProps {
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    backgroundColor: lighten("#EBEBEB", 0.25),
-    border: "none",
+    // backgroundColor: lighten("#EBEBEB", 0.3),
+    boxShadow: "0px 1px 3px #d7d7d7",
   },
   content: {
     padding: ({ paddingContent }: { paddingContent: boolean }) =>

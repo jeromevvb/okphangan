@@ -4,8 +4,8 @@ import firebase from "firebase/app";
 
 export type UserModel = {
   displayName:string
-  firstName:string,
-  lastName:string,
+  firstName?:string,
+  lastName?:string,
   email:string
   photoURL:string, 
   onboarded:boolean,
@@ -32,13 +32,12 @@ const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:N
     // create new user
     if (resultSignIn.additionalUserInfo?.isNewUser) {
       const uid = resultSignIn.user?.uid;
+      console.log(resultSignIn);
       
       const userModel = {
         ...newUserInfo,
-        // @ts-ignore
-        firstName:resultSignIn.additionalUserInfo?.profile?.first_name,
-        // @ts-ignore
-        lastName:resultSignIn.additionalUserInfo?.profile?.last_name,
+        // firstName:resultSignIn.additionalUserInfo?.profile?.first_name,
+        // lastName:resultSignIn.additionalUserInfo?.profile?.last_name,
         displayName:resultSignIn.user?.displayName,
         email:resultSignIn.user?.email,
         photoURL:resultSignIn.user?.photoURL, 

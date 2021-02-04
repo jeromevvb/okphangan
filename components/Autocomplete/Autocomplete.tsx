@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { createFilterOptions } from "@material-ui/lab/Autocomplete";
-import InputText from "@components/InputText";
-import useAutocomplete from "@material-ui/lab/useAutocomplete";
-import { Box, createStyles, makeStyles, Paper, Theme } from "@material-ui/core";
-import BodyText from "@components/BodyText";
-import { InputTextProps } from "@components/InputText/InputText";
+import React from "react";
+import MDAutocomplete, {
+  AutocompleteProps as MDAutocompleteProps,
+} from "@material-ui/lab/Autocomplete";
+import {
+  FormHelperText,
+  InputBaseProps,
+  InputLabel,
+  InputLabelProps,
+  lighten,
+  makeStyles,
+  TextField,
+  Theme,
+} from "@material-ui/core";
 
 export interface Option {
   inputValue?: string;
@@ -14,104 +21,110 @@ export interface Option {
 }
 
 export interface AutocompleteProps {
-  InputProps: InputTextProps;
-  value: Option | undefined;
+  helper?: string;
+  errorMessage?: string;
+  error?: boolean;
+  InputLabelProps?: InputLabelProps;
+  multiple?: boolean;
+  label: string;
+  name: string;
+  value: string | null | Array<string>;
   options: Array<Option>;
-  onChange(option: Option): void;
+  onChange(option: Array<string> | string): void;
+  onBlur(e: React.FocusEvent<any>): void;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    listbox: {
-      margin: 0,
-      width: "100%",
-      padding: 0,
-      zIndex: 1,
-      position: "absolute",
-      listStyle: "none",
-      backgroundColor: theme.palette.background.paper,
-      overflow: "auto",
-      maxHeight: 200,
-      border: "1px solid rgba(0,0,0,.25)",
-      '& li[data-focus="true"]': {
-        backgroundColor: theme.palette.primary.light,
-        color: "white",
-        cursor: "pointer",
-      },
-      "& li:active": {
-        backgroundColor: theme.palette.primary.light,
-        color: "white",
-      },
+const useStyles = makeStyles((theme: Theme) => ({
+  input: {
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: "#EBEBEB",
+    border: "1px solid #EBEBEB",
+    padding: "6px 12px",
+    transition: theme.transitions.create(["border-color"]),
+    "&:focus": {
+      borderColor: lighten(theme.palette.primary.main, 0.3),
     },
-  })
-);
-
-const filter = createFilterOptions<Option>();
+  },
+}));
 
 const Autocomplete: React.FC<AutocompleteProps> = (props) => {
   const {
-    onChange: handleChange,
+    onChange,
     options,
-    value: defaultValue,
-    InputProps,
-  } = props;
-  const classes = useStyles();
-  const [value, setValue] = useState<Option | undefined>(defaultValue);
-
-  const {
-    getRootProps,
-    getInputLabelProps,
-    getInputProps,
-    getListboxProps,
-    getOptionProps,
-    groupedOptions,
-  } = useAutocomplete({
+    error,
+    InputLabelProps,
+    helper,
+    errorMessage,
+    label,
     value,
-    options,
-    selectOnFocus: true,
-    clearOnBlur: true,
-    handleHomeEndKeys: true,
-    getOptionLabel: (option) => {
-      // Regular option
-      return option.label;
-    },
-    onChange: (event, newValue: Option) => {
-      if (newValue === null) return;
-      handleChange(newValue);
-    },
-    filterOptions: (options, params) => {
-      return filter(options, params);
-    },
-  });
+    multiple = false,
+    onBlur,
+    name,
+  } = props;
+
+  const classes = useStyles();
+  let parsedValue: Option | Option[] | null = null;
+
+  const handleChange = (
+    event: React.ChangeEvent<{}>,
+    option: Option[] | Option
+  ) => {
+    if (option instanceof Array) {
+      return onChange(option.map((n) => n.value));
+    }
+
+    onChange(option.value);
+  };
+
+  if (value instanceof Array) {
+    parsedValue = value.reduce((state, node) => {
+      const option = options.find((option) => option.value === node);
+
+      if (!option) {
+        return state;
+      }
+
+      return [...state, option];
+    }, []);
+  } else {
+    parsedValue = options.find((option) => option.value === value) || null;
+  }
 
   return (
-    <Box position="relative" marginBottom={2}>
-      <div {...getRootProps()}>
-        <InputText
-          InputLabelProps={getInputLabelProps()}
-          inputProps={getInputProps()}
-          {...InputProps}
-        />
-      </div>
-      {groupedOptions.length > 0 && (
-        <Paper classes={{ root: classes.listbox }}>
-          <div {...getListboxProps()}>
-            {groupedOptions.map((option, index) => (
-              <li {...getOptionProps({ option, index })}>
-                <Box
-                  paddingLeft={2}
-                  paddingTop={1}
-                  paddingBottom={1}
-                  paddingRight={2}
-                >
-                  <BodyText>{option.label}</BodyText>
-                </Box>
-              </li>
-            ))}
-          </div>
-        </Paper>
+    <div>
+      <InputLabel error={error} {...InputLabelProps}>
+        {label}
+      </InputLabel>
+      <MDAutocomplete
+        multiple={multiple}
+        options={options}
+        filterSelectedOptions
+        value={parsedValue}
+        getOptionLabel={(option: Option) => option.label}
+        getOptionSelected={(option: Option, optionSelected: Option) => {
+          return option.value === optionSelected.value;
+        }}
+        onChange={handleChange}
+        renderInput={(params) => (
+          <TextField
+            name={name}
+            variant="standard"
+            classes={{ root: classes.input }}
+            {...{
+              ...params,
+              InputProps: {
+                ...params.InputProps,
+                disableUnderline: true,
+                onBlur,
+              },
+            }}
+          />
+        )}
+      />
+      {(errorMessage || helper) && (
+        <FormHelperText error={error}>{errorMessage || helper}</FormHelperText>
       )}
-    </Box>
+    </div>
   );
 };
 

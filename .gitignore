@@ -5,3 +5,5 @@ node_modules
 .env.*
 
 secrets.json
+database-debug.log
+ui-debug.log

@@ -7,8 +7,6 @@ import { FuegoProvider } from "@nandorojo/swr-firestore";
 import fuego from "@services/fuego";
 import theme from "../theme";
 
-import "../styles/globals.css";
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     // Remove the server-side injected CSS.

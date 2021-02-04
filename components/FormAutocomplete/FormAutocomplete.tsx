@@ -1,16 +1,18 @@
 import React from "react";
 import Autocomplete, { Option } from "@components/Autocomplete";
+import { Box } from "@material-ui/core";
 import { FormikValues, useFormikContext } from "formik";
-import { InputTextProps } from "@components/InputText/InputText";
 
-export interface FormAutocompleteProps extends InputTextProps {
+interface FormAutocompleteProps {
   name: string;
-  options: Array<Option>;
+  handleChange?(): void;
   label: string;
+  options: Array<Option>;
+  multiple?: boolean;
 }
 
 const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
-  const { name, options, label, ...restProps } = props;
+  const { name, options, label, handleChange, multiple = false } = props;
   const {
     values,
     handleBlur,
@@ -19,28 +21,32 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     errors,
   } = useFormikContext<FormikValues>();
 
-  const handleChange = (option: Option) => {
-    setFieldValue(name, option.value);
+  const handleChangeAutocomplete = (value: Array<string> | string) => {
+    if (!value) {
+      return setFieldValue(name, null);
+    }
+
+    setFieldValue(name, value);
+    if (handleChange) handleChange();
   };
+
   const isError =
     touched.hasOwnProperty(name) && errors.hasOwnProperty(name) ? true : false;
 
-  const defaultValue = options.find((o) => o.value === values[name]);
-
   return (
-    <Autocomplete
-      InputProps={{
-        ...restProps,
-        label,
-        name,
-        onBlur: handleBlur,
-        error: isError,
-        errorMessage: isError ? (errors[name] as string) : "",
-      }}
-      value={defaultValue}
-      options={options}
-      onChange={handleChange}
-    />
+    <Box marginBottom={2}>
+      <Autocomplete
+        multiple={multiple}
+        label={label}
+        name={name}
+        onBlur={handleBlur}
+        error={isError}
+        errorMessage={isError ? (errors[name] as string) : ""}
+        value={values[name]}
+        options={options}
+        onChange={handleChangeAutocomplete}
+      />
+    </Box>
   );
 };
 

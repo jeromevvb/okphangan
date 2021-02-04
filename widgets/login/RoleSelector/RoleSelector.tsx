@@ -4,15 +4,12 @@ import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 import React from "react";
 
-interface LoginRoleSelectorProps {
+interface RoleSelectorProps {
   onChangeRole(role: string): void;
   role: "member" | "business" | string;
 }
 
-const LoginRoleSelector: React.FC<LoginRoleSelectorProps> = ({
-  role,
-  onChangeRole,
-}) => {
+const RoleSelector: React.FC<RoleSelectorProps> = ({ role, onChangeRole }) => {
   const options = [
     { label: "I live here or i'm a tourist", value: "member" },
     { label: "I have a business or i'm a freelancer", value: "business" },
@@ -40,4 +37,4 @@ const LoginRoleSelector: React.FC<LoginRoleSelectorProps> = ({
   );
 };
 
-export default LoginRoleSelector;
+export default RoleSelector;
