@@ -8,6 +8,7 @@ export const Default = Template.bind({});
 Default.args = {
   label: "My Input Text",
   name: "myInputText",
+  onChange: () => {},
   options: [
     { label: "Option 1", value: "opt1" },
     { label: "Option 2", value: "opt2" },

@@ -13,8 +13,6 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
     setFieldValue("type", "");
   };
 
-  console.log(values);
-
   return (
     <div>
       <FormAutocomplete
@@ -34,7 +32,7 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
             multiple
             name="tags"
             options={tags}
-            label="Type some tags"
+            label="Select some tags (max 5 tags)"
           />
         </Fragment>
       )}

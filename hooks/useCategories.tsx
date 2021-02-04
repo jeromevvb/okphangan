@@ -7,14 +7,15 @@ type Categories = {
   value: string;
 };
 
-type Types = {
-  [id: string]: Array<{ label: string; value: string }>;
-};
-
 type Tag = {
   label: string;
   value: string;
 };
+
+type Types = Array<{
+  label: string;
+  value: string;
+}>;
 
 const useCategories = (): {
   categories: Array<Categories>;

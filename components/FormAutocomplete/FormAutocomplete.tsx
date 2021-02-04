@@ -26,6 +26,10 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
       return setFieldValue(name, null);
     }
 
+    if (value instanceof Array && value.length > 5) {
+      return false;
+    }
+
     setFieldValue(name, value);
     if (handleChange) handleChange();
   };
