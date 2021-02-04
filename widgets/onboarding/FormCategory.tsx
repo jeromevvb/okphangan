@@ -30,6 +30,7 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
           />
           <FormAutocomplete
             multiple
+            limitTags={5}
             name="tags"
             options={tags}
             label="Select some tags (max 5 tags)"

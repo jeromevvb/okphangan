@@ -9,10 +9,18 @@ interface FormAutocompleteProps {
   label: string;
   options: Array<Option>;
   multiple?: boolean;
+  limitTags?: number;
 }
 
 const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
-  const { name, options, label, handleChange, multiple = false } = props;
+  const {
+    name,
+    options,
+    label,
+    handleChange,
+    multiple = false,
+    limitTags = -1,
+  } = props;
   const {
     values,
     handleBlur,
@@ -26,7 +34,11 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
       return setFieldValue(name, null);
     }
 
-    if (value instanceof Array && value.length > 5) {
+    if (
+      value instanceof Array &&
+      limitTags !== -1 &&
+      value.length > limitTags
+    ) {
       return false;
     }
 
