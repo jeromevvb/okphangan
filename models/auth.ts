@@ -11,6 +11,8 @@ export type UserModel = {
   onboarded:boolean,
   createdAt:firebase.firestore.Timestamp,
   role:'member' | 'business',
+  //if user has a business
+  businessId?:string,
   subscription : {
     plan:'free' | 'starter' | 'premium',
     startAt:firebase.firestore.Timestamp,
@@ -50,9 +52,12 @@ const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:N
         uid,
       }
 
+      console.log(userModel);
+      
+
       firebase.firestore().collection("users").doc(uid).set(userModel);
     }
-
+    console.log(resultSignIn);
     return resultSignIn;
   }
 

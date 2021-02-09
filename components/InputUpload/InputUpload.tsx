@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "inline-block",
     borderRadius: theme.shape.borderRadius,
     width: 80,
-    height: 100,
   },
   thumb: {
     position: "relative",

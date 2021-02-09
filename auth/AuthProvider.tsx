@@ -8,29 +8,55 @@ const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [userLoading, setUserLoading] = useState<boolean>(true);
 
-  // listen for token changes
-  // call setUser and write new token as a cookie
-  useEffect(() => {
-    return firebase.auth().onIdTokenChanged(async (user) => {
-      if (!user) {
-        setUser(null);
-        nookies.set(null, "token", "", {});
-      } else {
-        const token = await user.getIdToken();
-        // get user info
-        const db = firebase.firestore().collection("users").doc(user.uid);
-        const userInfo = await db.get();
-        setUser(userInfo.data() as UserModel);
-        //set cookie token
-        nookies.set(null, "token", token, {});
-      }
-
+  /**
+   * Callback function used for firebase.auth.onIdTokenChanged().
+   * Takes the user object returned and formats it for my state.
+   * We fetch the idToken and append it to my auth state and store it.
+   */
+  const onIdTokenChanged = async (firebaseUser: firebase.User | null) => {
+    if (!firebaseUser) {
       setUserLoading(false);
-    });
+      setUser(null);
+      return nookies.set(null, "token", "", {});
+    }
+
+    const token = await firebaseUser.getIdToken();
+    const db = firebase.firestore().collection("users").doc(firebaseUser.uid);
+    const userData = await db.get();
+
+    setUser(userData.data() as UserModel);
+    //set cookie token
+    nookies.set(null, "token", token, {});
+
+    setUserLoading(false);
+  };
+  /**
+   * Callback for when firebase signOut.
+   * Sets auth state to null and loading to true.
+   */
+  const clear = () => {
+    setUser(null);
+    setUserLoading(false);
+  };
+
+  /**
+   * Calls firebase signOut and with clear callback to reset state.
+   */
+  const signOut = () => {
+    return firebase.auth().signOut().then(clear);
+  };
+
+  /**
+   * Watches for state change for firebase auth and calls the handleUser callback
+   * on every change.
+   */
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onIdTokenChanged(onIdTokenChanged);
+    return () => unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, userLoading }}>
+    <AuthContext.Provider value={{ user, userLoading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

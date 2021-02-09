@@ -1,27 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import UserAuthGranted from "@auth/UserAuthGranted";
 import Page from "@components/Page";
 import WelcomeLayout from "@components/WelcomeLayout";
 import PageTitle from "@components/PageTitle";
 import Form from "@components/Form";
 import {
-  PlaceCreationValues,
-  placeCreationSchema,
-  createPlace,
-} from "@models/places";
+  BusinessCreationValues,
+  businessCreationSchema,
+  createBusiness,
+} from "@models/business";
 import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
 import FormInputUpload from "@components/FormInputUpload";
 import FormSubmitButton from "@components/FormSubmitButton";
-import FormAutocomplete from "@components/FormAutocomplete";
 import useAuth from "@auth/useAuth";
 import { UserModel } from "@models/auth";
 import FormInputCheckbox from "@components/FormInputCheckbox";
 import FormShowIf from "@components/FormShowIf";
 import FormGoogleMaps from "@components/FormGoogleMaps";
 import { useRouter } from "next/router";
-import { useCollection, useDocument } from "@nandorojo/swr-firestore";
-import useCategories from "@hooks/useCategories";
 import FormCategory from "widgets/onboarding/FormCategory";
 
 interface OnboardingProps {
@@ -29,20 +26,20 @@ interface OnboardingProps {
 }
 
 const Onboarding: React.FC<OnboardingProps> = ({}) => {
-  const initialValues = placeCreationSchema.default();
+  const initialValues = businessCreationSchema.default();
   const router = useRouter();
   const { user } = useAuth();
 
   const handleSubmit = async (
-    values: PlaceCreationValues,
-    formikHelpers: FormikHelpers<PlaceCreationValues>
+    values: BusinessCreationValues,
+    formikHelpers: FormikHelpers<BusinessCreationValues>
   ) => {
     try {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
-      const slug = await createPlace(user as UserModel, values);
+      const slug = await createBusiness(user as UserModel, values);
       // redirect
-      router.push(`/places/${slug}`);
+      router.push(`/business/${slug}`);
       formikHelpers.setSubmitting(false);
     } catch (error) {
       formikHelpers.setStatus({ error: error.message });
@@ -66,7 +63,7 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
           <Form
             onSubmit={handleSubmit}
             initialValues={initialValues}
-            validationSchema={placeCreationSchema}
+            validationSchema={businessCreationSchema}
           >
             <FormInputText
               name="name"
@@ -80,7 +77,12 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
               fullWidth
             />
 
-            <FormInputText name="phone" label="Public phone number" fullWidth />
+            <FormInputText
+              name="phone"
+              label="Phone number"
+              helper="This number will be display on your business page"
+              fullWidth
+            />
 
             <FormCategory></FormCategory>
 
