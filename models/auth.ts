@@ -4,15 +4,13 @@ import firebase from "firebase/app";
 
 export type UserModel = {
   displayName:string
-  firstName?:string,
-  lastName?:string,
   email:string
   photoURL:string, 
   onboarded:boolean,
   createdAt:firebase.firestore.Timestamp,
   role:'member' | 'business',
   //if user has a business
-  businessId?:string,
+  businessId:string, 
   subscription : {
     plan:'free' | 'starter' | 'premium',
     startAt:firebase.firestore.Timestamp,
@@ -34,8 +32,7 @@ const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:N
     // create new user
     if (resultSignIn.additionalUserInfo?.isNewUser) {
       const uid = resultSignIn.user?.uid;
-      console.log(resultSignIn);
-      
+
       const userModel = {
         ...newUserInfo,
         // firstName:resultSignIn.additionalUserInfo?.profile?.first_name,
@@ -52,12 +49,21 @@ const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:N
         uid,
       }
 
-      console.log(userModel);
-      
+      // pre create business if user is business role
+      if(userModel.role === 'business'){
+        const createBusinessRequest = await firebase.firestore().collection("businesses").add(
+        {
+          userId:uid,
+           createdAt:firebase.firestore.Timestamp.now()
+        });
+        const businessId = createBusinessRequest.id;
+        firebase.firestore().collection("users").doc(uid).set({userModel, businessId});
+      }else{
+        firebase.firestore().collection("users").doc(uid).set({userModel});
+      }
 
-      firebase.firestore().collection("users").doc(uid).set(userModel);
-    }
-    console.log(resultSignIn);
+    } 
+
     return resultSignIn;
   }
 

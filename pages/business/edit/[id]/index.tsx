@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import BusinessHeader from "@components/BusinessHeader";
 import { useDocument } from "@nandorojo/swr-firestore";
 import EditBusinessProfile from "./profile";
+import EditBusinessPhotos from "./photos";
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
@@ -76,10 +77,8 @@ const EditBusiness = () => {
     );
   }
 
-  const isOwner = business?.userId !== user?.businessId;
-
-  if (!isOwner || !business) {
-    router.replace("/");
+  //TODO: Create 404 page.
+  if (!business) {
     return "";
   }
 
@@ -108,6 +107,10 @@ const EditBusiness = () => {
                 label="Profile"
                 classes={{ selected: classes.tabSelected }}
               />
+              <Tab
+                label="Logo & Photos"
+                classes={{ selected: classes.tabSelected }}
+              />
               <Tab label="Blog" classes={{ selected: classes.tabSelected }} />
               <Tab
                 label="Hot deals"
@@ -119,10 +122,13 @@ const EditBusiness = () => {
               <EditBusinessProfile business={business} />
             </TabPanel>
             <TabPanel value={tab} index={1}>
-              Item Two
+              <EditBusinessPhotos business={business} />
             </TabPanel>
             <TabPanel value={tab} index={2}>
-              Item Three
+              Item 3
+            </TabPanel>
+            <TabPanel value={tab} index={3}>
+              Item 4
             </TabPanel>
           </Box>
         </Container>

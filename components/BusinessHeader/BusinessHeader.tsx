@@ -23,25 +23,29 @@ const useStyles = makeStyles((theme: Theme) => ({
   logo: {
     borderRadius: "100%",
     border: `3px solid ${theme.palette.primary.main} !important`,
+    objectFit: "cover",
+    height: 125,
+    width: 125,
   },
 }));
 
 const BusinessHeader: React.FC<BusinessHeaderProps> = ({ business }) => {
   const classes = useStyles();
+  const logo = business.logo instanceof Array ? business.logo[0] : null;
 
   return (
     <Fragment>
       <Box className={classes.logoContainer}>
-        {business.logoUrl && (
+        {logo && (
           <Image
             className={classes.logo}
-            src={business.logoUrl}
+            src={logo}
             alt={`Logo from ${business.name}`}
             width={125}
             height={125}
           />
         )}
-        {!business.logoUrl && (
+        {!logo && (
           <Avatar classes={{ root: classes.businessholderLogo }}>
             {business.name.substring(0, 2)}
           </Avatar>

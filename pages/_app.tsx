@@ -6,6 +6,7 @@ import AuthProvider from "@auth/AuthProvider";
 import { FuegoProvider } from "@nandorojo/swr-firestore";
 import fuego from "@services/fuego";
 import theme from "../theme";
+import { Toaster } from "react-hot-toast";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -26,6 +27,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <AuthProvider>
             <Component {...pageProps} />
           </AuthProvider>
+          <Toaster />
         </ThemeProvider>
       </FuegoProvider>
     </Fragment>

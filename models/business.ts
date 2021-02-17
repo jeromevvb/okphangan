@@ -3,6 +3,7 @@ import { UserModel } from "./auth";
 import firebase from "firebase/app";
 import "firebase/storage";
 import makeSlug from 'limax';
+import { createLogoForBusiness } from "./storage";
 
 const phoneRegExp = /([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/
 //.matches(/((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,'Enter correct url')
@@ -14,63 +15,54 @@ export const businessCreationSchema = Yup.object().shape({
   phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').label("Phone").default("").required(),
   category: Yup.string().label('Category').default('').required(),
   type:  Yup.string().label('Type').default('').required(),
-  tags:Yup.array().ensure(),
+  tags:Yup.array(Yup.string().required()).ensure(),
   hasGeocoding: Yup.boolean().default(true),
   description:Yup.string().max(250).label("Description").default("").required(),
-  logo:Yup.array().of(Yup.mixed()).ensure(),
+  logo:Yup.array(Yup.string().required()).ensure(),
+  photos:Yup.array(Yup.string().required()).ensure(),
   geocoding:Yup.object().shape({lat:Yup.number(), lng:Yup.number()})
 }).required();
 
 export type BusinessCreationValues = Yup.InferType<typeof businessCreationSchema>;
 
 export type BusinessModel = BusinessCreationValues & {
+  id:string,
   createdAt:firebase.firestore.Timestamp,
-  logoUrl?:string,
+  updateAt:firebase.firestore.Timestamp,
   userId:string,
   slug:string
 };
 
 /**
  * 
- * @param user 
- * @param placeForm 
+ * @param businessForm 
+ * @param businessId
+ * We don't really create the business because it has been created before,
+ * but we add more info after onboarding
+ *  
  */
 
-const createBusiness = async (user:UserModel, userForm:BusinessCreationValues) => {
+const updateBusiness = async (businessForm:BusinessCreationValues, businessId:string) => {
   // create slug 
-  const slug = makeSlug(userForm.name, { separateNumbers: true, separateApostrophes: true });
+  const slug = makeSlug(businessForm.name, { separateNumbers: true, separateApostrophes: true });
 
-  // extract logo and complete form
-  const form:BusinessModel = {
-    ...userForm, 
-    createdAt:firebase.firestore.Timestamp.now(), 
-    logoUrl:'',
-    userId:user.uid,
-    slug
-  };
-  delete form.logo;
-
-  // create business 
-  const createBusinessRequest = await firebase.firestore().collection("businesses").add(form);
-  const businessId = createBusinessRequest.id;
-  
-  // user is now onboarded and have a business id
-  await firebase.firestore().collection("users").doc(user.uid).update({onboarded:true, businessId});
-
-  // stock imagemif we have logo
-  if(userForm.logo?.length !== 0){
-    const storageRef = firebase.storage().ref(`businesses/${businessId}/logo`);
-    //TODO:SOLVE THIS PROBLEM OF TS
-    // @ts-ignore
-    await storageRef.put(userForm.logo[0]);
-    const logoUrl = await storageRef.getDownloadURL();
- 
-    // update business with logoUrl
-    await firebase.firestore().collection("businesses").doc(businessId).update({logoUrl})
+  //TODO: find a better approach to get rid of __snapshot
+  // __snapshot is adding by fuego
+  if('__snapshot' in businessForm){
+    //@ts-ignore
+    delete businessForm.__snapshot;
   }
 
-
+  // extract logo and complete form
+  const form = {
+    ...businessForm, 
+    slug
+  };
+ 
+  // updat business 
+  await firebase.firestore().collection('businesses').doc(businessId).update(form);
+  
   return slug;
 }
 
-export {createBusiness}
+export {updateBusiness}

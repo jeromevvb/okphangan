@@ -17,12 +17,14 @@ const FormGoogleMaps: React.FC<FormGoogleMapsProps> = ({ name, label }) => {
     setFieldValue(name, position);
   };
 
+  const defaultMarker = values[name] || null;
+
   return (
     <Box marginBottom={2}>
       <Box>
         <InputLabel>{label}</InputLabel>
       </Box>
-      <GoogleMaps onClickMap={handleClickMap} />
+      <GoogleMaps defaultMarker={defaultMarker} onClickMap={handleClickMap} />
     </Box>
   );
 };

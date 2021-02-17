@@ -6,7 +6,7 @@ import { BusinessModel } from "@models/business";
 import Navbar from "@components/Navbar";
 import { Box, Container, Grid, makeStyles, Theme } from "@material-ui/core";
 import Card from "@components/Card/Card";
-import Geolocation from "widgets/place/Geolocation";
+import Geolocation from "widgets/business/Geolocation";
 import Subtitle from "@components/Subtitle";
 import Button from "@components/Button";
 import { FaEdit, FaRegHeart } from "react-icons/fa";
@@ -14,8 +14,8 @@ import useAuth from "@auth/useAuth";
 import BusinessHeader from "@components/BusinessHeader";
 
 export interface PlaceProps {
-  place: BusinessModel;
-  placeId: string;
+  business: BusinessModel;
+  businessId: string;
 }
 
 type Params = {
@@ -26,15 +26,15 @@ type Params = {
 
 const useStyles = makeStyles((theme: Theme) => ({}));
 
-const Place: React.FC<PlaceProps> = (props) => {
-  const { place, placeId } = props;
+const Business: React.FC<PlaceProps> = (props) => {
+  const { business, businessId } = props;
   const { user } = useAuth();
   const classes = useStyles();
 
-  const isOwner = placeId === user?.businessId;
+  const isOwner = businessId === user?.businessId;
 
   return (
-    <Page title={place.name} description={place.description}>
+    <Page title={business.name} description={business.description}>
       <Navbar></Navbar>
       <Container>
         <Box
@@ -44,14 +44,14 @@ const Place: React.FC<PlaceProps> = (props) => {
           alignItems="center"
           marginTop={4}
         >
-          <BusinessHeader business={place} />
+          <BusinessHeader business={business} />
           <Box flex="1" />
           <Box>
             {isOwner && (
               <Button
                 variant="contained"
                 color="primary"
-                href={`/business/edit/${placeId}`}
+                href={`/business/edit/${businessId}`}
                 startIcon={<FaEdit />}
               >
                 Edit my page
@@ -71,16 +71,31 @@ const Place: React.FC<PlaceProps> = (props) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Card title="Pictures" />
+            <Box display="flex" alignContent="center" flexWrap="wrap">
+              {business.photos?.map((photoUrl) => {
+                return (
+                  <Box flex="25%" maxWidth="25%">
+                    <img
+                      src={photoUrl}
+                      style={{
+                        objectFit: "cover",
+                        verticalAlign: "middle",
+                        width: "100%",
+                      }}
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={8}>
             <Box marginBottom={4}>
-              <Subtitle>{place.description}</Subtitle>
+              <Subtitle>{business.description}</Subtitle>
             </Box>
           </Grid>
-          {place.hasGeocoding && (
+          {business.hasGeocoding && (
             <Grid item xs={12} sm={6} md={4}>
-              <Geolocation geocoding={place.geocoding}></Geolocation>
+              <Geolocation geocoding={business.geocoding}></Geolocation>
             </Grid>
           )}
         </Grid>
@@ -89,7 +104,7 @@ const Place: React.FC<PlaceProps> = (props) => {
   );
 };
 
-export default Place;
+export default Business;
 
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -120,8 +135,8 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
 
   return {
     props: {
-      place: result[0],
-      placeId: result[0].id,
+      business: result[0],
+      businessId: result[0].id,
     },
   };
 };

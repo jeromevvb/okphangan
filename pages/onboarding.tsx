@@ -7,7 +7,7 @@ import Form from "@components/Form";
 import {
   BusinessCreationValues,
   businessCreationSchema,
-  createBusiness,
+  updateBusiness,
 } from "@models/business";
 import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
@@ -21,9 +21,7 @@ import FormGoogleMaps from "@components/FormGoogleMaps";
 import { useRouter } from "next/router";
 import FormCategory from "widgets/onboarding/FormCategory";
 
-interface OnboardingProps {
-  test?: string;
-}
+interface OnboardingProps {}
 
 const Onboarding: React.FC<OnboardingProps> = ({}) => {
   const initialValues = businessCreationSchema.default();
@@ -37,7 +35,7 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
     try {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
-      const slug = await createBusiness(user as UserModel, values);
+      const slug = await updateBusiness(values, user?.businessId);
       // redirect
       router.push(`/business/${slug}`);
       formikHelpers.setSubmitting(false);
@@ -96,7 +94,10 @@ const Onboarding: React.FC<OnboardingProps> = ({}) => {
             />
 
             <FormInputUpload
+              maxFiles={1}
+              storageUrl={`businesses/${business.id}/logo`}
               name="logo"
+              async={false}
               label="Logo de votre business"
               DropzoneProps={{ maxFiles: 1, accept: "image/jpeg, image/png" }}
             />
