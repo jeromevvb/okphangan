@@ -2,7 +2,7 @@ import InputUpload, { InputUploadProps } from "@components/InputUpload";
 import { FormikValues, useFormikContext } from "formik";
 import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
-import { deleteFile, uploadFile } from "@models/storage";
+import { deleteFile, uploadFiles } from "@models/storage";
 
 import firebase from "firebase/app";
 import "firebase/storage";
@@ -10,22 +10,21 @@ import "firebase/storage";
 export interface FormInputUploadProps extends InputUploadProps {
   name: string;
   async?: boolean;
-  storageUrl: string;
+  firestoreUrl: string;
 }
 
 const FormInputUpload: React.FC<FormInputUploadProps> = ({
   name,
   label,
-  storageUrl,
+  firestoreUrl,
   DropzoneProps = {},
   maxFiles,
 }) => {
-  const { values, setFieldValue, touched, errors } = useFormikContext<
-    FormikValues
-  >();
-
   const [error, setError] = useState<string>("");
+  const [files, setFiles] = useState<Array<string>>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const storageUrl = `${firestoreUrl}/${name}`;
 
   useEffect(() => {
     setLoading(true);
@@ -39,7 +38,7 @@ const FormInputUpload: React.FC<FormInputUploadProps> = ({
         const promises = res.items.map((itemRef) => itemRef.getDownloadURL());
 
         Promise.all(promises).then((result: string[]) => {
-          setFieldValue(name, result);
+          setFiles(result);
           setLoading(false);
         });
       })
@@ -49,26 +48,33 @@ const FormInputUpload: React.FC<FormInputUploadProps> = ({
       });
   }, []);
 
+  /**
+   *
+   * @param acceptedFiles
+   */
   const handleUploadFile = async (acceptedFiles: Array<File>) => {
     setLoading(true);
-
-    const promises = acceptedFiles.map((file) => uploadFile(file, storageUrl));
-
-    Promise.all(promises).then((result: string[]) => {
-      setFieldValue(name, [...result, ...values[name]]);
-      setLoading(false);
-    });
+    uploadFiles(acceptedFiles, firestoreUrl, name)
+      .then((fileUrls) => {
+        setFiles([...fileUrls, ...files]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   };
 
+  /**
+   *
+   * @param fileUrl
+   */
   const handleDeleteFile = async (fileUrl: string) => {
     // delete file
     setLoading(true);
-    deleteFile(fileUrl)
+    deleteFile(fileUrl, firestoreUrl, name)
       .then(() => {
-        setFieldValue(
-          name,
-          values[name].filter((f: string) => f !== fileUrl)
-        );
+        setFiles(files.filter((f: string) => f !== fileUrl));
         setLoading(false);
       })
       .catch((error) => {
@@ -85,7 +91,7 @@ const FormInputUpload: React.FC<FormInputUploadProps> = ({
         onUpload={handleUploadFile}
         onDelete={handleDeleteFile}
         error={error ? true : false}
-        files={values[name]}
+        files={files}
         label={label}
         errorMessage={error}
         DropzoneProps={DropzoneProps}

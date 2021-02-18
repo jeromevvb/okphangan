@@ -28,6 +28,7 @@ const EditBusinessProfile: React.FC<EditBusinessProfileProps> = ({
   business,
 }) => {
   const initialValues = business;
+
   const isSm = useMediaQuery("sm");
 
   const handleSubmit = async (

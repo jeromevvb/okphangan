@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { UserModel } from "./auth";
-import firebase from "firebase/app";
+import firebase from "@services/firebase";
 import "firebase/storage";
 import makeSlug from 'limax';
 import { createLogoForBusiness } from "./storage";
@@ -13,6 +13,7 @@ export const businessCreationSchema = Yup.object().shape({
   name: Yup.string().matches(nameRegExp, 'Name is not valid, only use english alphabet').label("Name").default("").required(),
   website: Yup.string().label("Website").default(""),
   phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').label("Phone").default("").required(),
+  email: Yup.string().email().label("Email").default("").required(),
   category: Yup.string().label('Category').default('').required(),
   type:  Yup.string().label('Type').default('').required(),
   tags:Yup.array(Yup.string().required()).ensure(),
@@ -46,13 +47,6 @@ const updateBusiness = async (businessForm:BusinessCreationValues, businessId:st
   // create slug 
   const slug = makeSlug(businessForm.name, { separateNumbers: true, separateApostrophes: true });
 
-  //TODO: find a better approach to get rid of __snapshot
-  // __snapshot is adding by fuego
-  if('__snapshot' in businessForm){
-    //@ts-ignore
-    delete businessForm.__snapshot;
-  }
-
   // extract logo and complete form
   const form = {
     ...businessForm, 
@@ -64,5 +58,7 @@ const updateBusiness = async (businessForm:BusinessCreationValues, businessId:st
   
   return slug;
 }
+
+
 
 export {updateBusiness}

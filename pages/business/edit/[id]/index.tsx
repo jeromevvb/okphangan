@@ -12,13 +12,15 @@ import {
   Tabs,
   Theme,
 } from "@material-ui/core";
+import useDocument from "@hooks/useDocument";
 import useAuth from "@auth/useAuth";
 import UserAuthGranted from "@auth/UserAuthGranted";
 import { useRouter } from "next/router";
 import BusinessHeader from "@components/BusinessHeader";
-import { useDocument } from "@nandorojo/swr-firestore";
 import EditBusinessProfile from "./profile";
 import EditBusinessPhotos from "./photos";
+import useCollection from "@hooks/useCollection";
+import useCategories from "@hooks/useCategories";
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
@@ -60,8 +62,8 @@ const EditBusiness = () => {
   const classes = useStyles();
   const router = useRouter();
   const [tab, setTab] = useState<number>(0);
-  const id = router.query.id;
-  const { data: business, loading, error } = useDocument<BusinessModel>(
+  const id = router.query.id as string;
+  const { loading, data: business, error } = useDocument<BusinessModel>(
     `businesses/${id}`
   );
 
@@ -138,23 +140,3 @@ const EditBusiness = () => {
 };
 
 export default EditBusiness;
-
-// export const getStaticProps: GetStaticProps = async () => {
-//   const request = await fuego.db
-//     .collection("places")
-//     .where("userId", "==", "Rl7oatemA9XISnVZ8MvKOxvwSAx1")
-//     .get();
-
-//   const result = request.docs.map((doc) => {
-//     return {
-//       ...doc.data(),
-//       createdAt: doc.data().createdAt.toDate().toString(),
-//     };
-//   });
-
-//   return {
-//     props: {
-//       place: result[0],
-//     },
-//   };
-// };

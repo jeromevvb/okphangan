@@ -1,17 +1,21 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import fuego from "@services/fuego";
+import firebase from "@services/firebase";
 import Page from "@components/Page";
 import { BusinessModel } from "@models/business";
 import Navbar from "@components/Navbar";
 import { Box, Container, Grid, makeStyles, Theme } from "@material-ui/core";
-import Card from "@components/Card/Card";
-import Geolocation from "widgets/business/Geolocation";
 import Subtitle from "@components/Subtitle";
 import Button from "@components/Button";
 import { FaEdit, FaRegHeart } from "react-icons/fa";
 import useAuth from "@auth/useAuth";
 import BusinessHeader from "@components/BusinessHeader";
+import Geolocation from "widgets/business/Geolocation";
+
+import "photoswipe/dist/photoswipe.css";
+import "photoswipe/dist/default-skin/default-skin.css";
+
+import { Gallery, Item } from "react-photoswipe-gallery";
 
 export interface PlaceProps {
   business: BusinessModel;
@@ -71,22 +75,38 @@ const Business: React.FC<PlaceProps> = (props) => {
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Box display="flex" alignContent="center" flexWrap="wrap">
+            <Gallery>
               {business.photos?.map((photoUrl) => {
                 return (
-                  <Box flex="25%" maxWidth="25%">
-                    <img
-                      src={photoUrl}
-                      style={{
-                        objectFit: "cover",
-                        verticalAlign: "middle",
-                        width: "100%",
-                      }}
-                    />
-                  </Box>
+                  <Item original={photoUrl} thumbnail={photoUrl}>
+                    {({ ref, open }) => (
+                      <div
+                        style={{
+                          width: "250px",
+                          maxHeight: "200",
+                          margin: "0px 5px",
+                          display: "inline-block",
+                        }}
+                      >
+                        <img
+                          width={250}
+                          height={200}
+                          ref={ref as React.MutableRefObject<HTMLImageElement>}
+                          style={{
+                            cursor: "pointer",
+                            objectFit: "cover",
+                            width: "100%",
+                            maxHeight: "100%",
+                          }}
+                          onClick={open}
+                          src={photoUrl}
+                        />
+                      </div>
+                    )}
+                  </Item>
                 );
               })}
-            </Box>
+            </Gallery>
           </Grid>
           <Grid item xs={12} sm={6} md={8}>
             <Box marginBottom={4}>
@@ -108,7 +128,7 @@ export default Business;
 
 // This function gets called at build time
 export const getStaticPaths: GetStaticPaths = async () => {
-  const request = await fuego.db.collection("businesses").get();
+  const request = await firebase.firestore().collection("businesses").get();
 
   // // Get the paths we want to pre-render based on posts
   const paths = request.docs.map((doc) => `/business/${doc.data().slug}`);
@@ -120,7 +140,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
   const { slug } = params;
-  const request = await fuego.db
+  const request = await firebase
+    .firestore()
     .collection("businesses")
     .where("slug", "==", slug)
     .get();
@@ -136,7 +157,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
   return {
     props: {
       business: result[0],
-      businessId: result[0].id,
+      // businessId: result[0].id,
     },
   };
 };

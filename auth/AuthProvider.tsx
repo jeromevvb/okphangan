@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import nookies from "nookies";
 import AuthContext from "./AuthContext";
-import firebase from "firebase/app";
+import firebase from "../services/firebase";
 import { UserModel } from "@models/auth";
 
 const AuthProvider = ({ children }: any) => {
