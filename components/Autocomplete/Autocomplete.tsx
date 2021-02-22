@@ -77,6 +77,8 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
   };
 
   if (value instanceof Array) {
+    console.log("======== value", value, options);
+
     parsedValue = value.reduce((state, node) => {
       const option = options.find((option) => option.value === node);
 
@@ -86,7 +88,11 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
 
       return [...state, option];
     }, []);
-  } else {
+
+    console.log("===== parsedValue", parsedValue);
+  }
+
+  if (value) {
     parsedValue = options.find((option) => option.value === value) || null;
   }
 

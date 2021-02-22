@@ -4,18 +4,23 @@ import firebase from "@services/firebase";
 import Page from "@components/Page";
 import { BusinessModel } from "@models/business";
 import Navbar from "@components/Navbar";
-import { Box, Container, Grid, makeStyles, Theme } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Grid,
+  makeStyles,
+  Theme,
+  Tooltip,
+} from "@material-ui/core";
 import Subtitle from "@components/Subtitle";
 import Button from "@components/Button";
 import { FaEdit, FaRegHeart } from "react-icons/fa";
 import useAuth from "@auth/useAuth";
 import BusinessHeader from "@components/BusinessHeader";
 import Geolocation from "widgets/business/Geolocation";
-
-import "photoswipe/dist/photoswipe.css";
-import "photoswipe/dist/default-skin/default-skin.css";
-
-import { Gallery, Item } from "react-photoswipe-gallery";
+import PhotosLightbox from "widgets/business/PhotosLightbox";
+import Card from "@components/Card";
+import ContactCard from "widgets/business/ContactCard";
 
 export interface PlaceProps {
   business: BusinessModel;
@@ -28,18 +33,20 @@ type Params = {
   };
 };
 
-const useStyles = makeStyles((theme: Theme) => ({}));
-
 const Business: React.FC<PlaceProps> = (props) => {
-  const { business, businessId } = props;
+  const { business } = props;
   const { user } = useAuth();
-  const classes = useStyles();
 
-  const isOwner = businessId === user?.businessId;
+  const photos: Array<string> =
+    business.photos instanceof Array
+      ? business.photos.map((photoUrl) => photoUrl)
+      : [];
+
+  const isOwner = business.id === user?.businessId;
 
   return (
     <Page title={business.name} description={business.description}>
-      <Navbar></Navbar>
+      <Navbar />
       <Container>
         <Box
           display="flex"
@@ -47,6 +54,7 @@ const Business: React.FC<PlaceProps> = (props) => {
           alignContent="center"
           alignItems="center"
           marginTop={4}
+          flexWrap="wrap"
         >
           <BusinessHeader business={business} />
           <Box flex="1" />
@@ -55,69 +63,52 @@ const Business: React.FC<PlaceProps> = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                href={`/business/edit/${businessId}`}
+                href={`/business/edit/${business.id}`}
                 startIcon={<FaEdit />}
               >
                 Edit my page
               </Button>
             )}
             {!isOwner && (
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<FaRegHeart />}
+              <Tooltip
+                title="Get notified when this page has some nice deals for you"
+                arrow
               >
-                FOLLOW
-              </Button>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<FaRegHeart />}
+                  >
+                    FOLLOW
+                  </Button>
+                </div>
+              </Tooltip>
             )}
           </Box>
         </Box>
 
         <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Gallery>
-              {business.photos?.map((photoUrl) => {
-                return (
-                  <Item original={photoUrl} thumbnail={photoUrl}>
-                    {({ ref, open }) => (
-                      <div
-                        style={{
-                          width: "250px",
-                          maxHeight: "200",
-                          margin: "0px 5px",
-                          display: "inline-block",
-                        }}
-                      >
-                        <img
-                          width={250}
-                          height={200}
-                          ref={ref as React.MutableRefObject<HTMLImageElement>}
-                          style={{
-                            cursor: "pointer",
-                            objectFit: "cover",
-                            width: "100%",
-                            maxHeight: "100%",
-                          }}
-                          onClick={open}
-                          src={photoUrl}
-                        />
-                      </div>
-                    )}
-                  </Item>
-                );
-              })}
-            </Gallery>
+          <Grid item xs={12} sm={7} md={8}>
+            <PhotosLightbox photos={photos}></PhotosLightbox>
+            {business.description && (
+              <Box marginTop={4}>
+                <Card title="Description">
+                  <Subtitle>{business.description}</Subtitle>
+                </Card>
+              </Box>
+            )}
           </Grid>
-          <Grid item xs={12} sm={6} md={8}>
-            <Box marginBottom={4}>
-              <Subtitle>{business.description}</Subtitle>
+          <Grid item xs={12} sm={5} md={4}>
+            <Box marginBottom={2}>
+              <ContactCard business={business} />
             </Box>
+
+            <Geolocation
+              hasGeocoding={business.hasGeocoding}
+              geocoding={business.geocoding}
+            ></Geolocation>
           </Grid>
-          {business.hasGeocoding && (
-            <Grid item xs={12} sm={6} md={4}>
-              <Geolocation geocoding={business.geocoding}></Geolocation>
-            </Grid>
-          )}
         </Grid>
       </Container>
     </Page>
@@ -154,10 +145,11 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
     };
   });
 
+  const business = { ...result[0], id: result[0].id };
+
   return {
     props: {
-      business: result[0],
-      // businessId: result[0].id,
+      business,
     },
   };
 };

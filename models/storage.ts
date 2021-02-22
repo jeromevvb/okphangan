@@ -53,7 +53,10 @@ const uploadFiles = async (files:Array<File>, firestoreUrl:string, fieldName:str
     
     // update object reference on firestore
     // background task
-    firebase.firestore().doc(firestoreUrl).update({[fieldName] : fileUrls});
+    firebase.firestore().doc(firestoreUrl).update({
+      [fieldName]: firebase.firestore.FieldValue.arrayUnion(...fileUrls)
+    });
+
 
     return fileUrls;
     //TODO:handle errors properly

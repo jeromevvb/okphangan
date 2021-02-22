@@ -19,8 +19,8 @@ import { useRouter } from "next/router";
 import BusinessHeader from "@components/BusinessHeader";
 import EditBusinessProfile from "./profile";
 import EditBusinessPhotos from "./photos";
-import useCollection from "@hooks/useCollection";
-import useCategories from "@hooks/useCategories";
+import { VscPreview } from "react-icons/vsc";
+import Button from "@components/Button";
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
@@ -94,9 +94,24 @@ const EditBusiness = () => {
             marginBottom={4}
             alignContent="center"
             alignItems="center"
+            flexWrap="wrap"
+            justifyContent="space-between"
             marginTop={4}
           >
-            <BusinessHeader business={business} />
+            <Box>
+              <BusinessHeader business={business} />
+            </Box>
+
+            <Box>
+              <Button
+                href={`/business/${business.slug}`}
+                variant="contained"
+                color="primary"
+                startIcon={<VscPreview />}
+              >
+                Go to my page
+              </Button>
+            </Box>
           </Box>
           <Box>
             <Tabs

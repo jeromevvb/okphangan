@@ -13,7 +13,7 @@ import {
 import { MdMenu } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
 import { Container } from "@material-ui/core";
-import UserAvatar from "@components/UserAvatar";
+import UserMenu from "widgets/navbar/UserMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,9 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
     user: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
-      },
+      // [theme.breakpoints.down("xs")]: {
+      //   display: "none",
+      // },
     },
     search: {
       position: "relative",
@@ -55,9 +55,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       marginLeft: 0,
       width: "100%",
+      display: "none",
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(1),
         width: "auto",
+        display: "block",
       },
     },
     searchIcon: {
@@ -128,7 +130,7 @@ const Navbar = () => {
               </div>
             </div>
             <div className={classes.user}>
-              <UserAvatar></UserAvatar>
+              <UserMenu />
             </div>
           </div>
         </Container>

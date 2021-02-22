@@ -34,7 +34,7 @@ const BusinessHeader: React.FC<BusinessHeaderProps> = ({ business }) => {
   const logo = business.logo instanceof Array ? business.logo[0] : null;
 
   return (
-    <Fragment>
+    <Box display="flex" alignItems="center">
       <Box className={classes.logoContainer}>
         {logo && (
           <Image
@@ -63,7 +63,7 @@ const BusinessHeader: React.FC<BusinessHeaderProps> = ({ business }) => {
             </Box>
           ))}
       </Box>
-    </Fragment>
+    </Box>
   );
 };
 

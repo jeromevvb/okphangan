@@ -1,5 +1,4 @@
 import { createContext } from "react";
-import firebase from "firebase/app";
 import { UserModel } from "@models/auth";
 
 interface ContextInterface {

@@ -3,6 +3,7 @@ import nookies from "nookies";
 import AuthContext from "./AuthContext";
 import firebase from "../services/firebase";
 import { UserModel } from "@models/auth";
+import toast from "react-hot-toast";
 
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserModel | null>(null);
@@ -37,12 +38,14 @@ const AuthProvider = ({ children }: any) => {
   const clear = () => {
     setUser(null);
     setUserLoading(false);
+    toast.success("Successfully logout");
   };
 
   /**
    * Calls firebase signOut and with clear callback to reset state.
    */
   const signOut = () => {
+    setUserLoading(true);
     return firebase.auth().signOut().then(clear);
   };
 

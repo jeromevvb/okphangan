@@ -1,16 +1,13 @@
 import React from "react";
 import NativeCard from "@material-ui/core/Card";
 import {
-  CardContent,
   CardHeader,
-  lighten,
   makeStyles,
   Theme,
+  CardProps as NativeCardProps,
 } from "@material-ui/core";
-import Subtitle from "@components/Subtitle";
-import Button from "@components/Button";
 
-export interface CardProps {
+export interface CardProps extends NativeCardProps {
   paddingContent?: boolean;
   title?: string;
   headerAction?: JSX.Element;
@@ -19,21 +16,29 @@ export interface CardProps {
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
     // backgroundColor: lighten("#EBEBEB", 0.3),
-    boxShadow: "0px 1px 3px #d7d7d7",
+    // boxShadow: "0px 1px 3px #d7d7d7",
   },
   content: {
     padding: ({ paddingContent }: { paddingContent: boolean }) =>
-      paddingContent ? "0px 12px 12px 12px" : "",
+      paddingContent ? "0px 16px 16px 16px" : "",
   },
 }));
 
 const Card: React.FC<CardProps> = (props) => {
-  const { children, paddingContent = true, title, headerAction } = props;
+  const {
+    children,
+    paddingContent = true,
+    title,
+    headerAction,
+    ...restProps
+  } = props;
   const classes = useStyles({ paddingContent });
 
   return (
-    <NativeCard classes={{ root: classes.card }} elevation={0}>
-      <CardHeader title={title} action={headerAction} />
+    <NativeCard classes={{ root: classes.card }} elevation={0} {...restProps}>
+      {(title || headerAction) && (
+        <CardHeader title={title} action={headerAction} />
+      )}
       <div className={classes.content}>{children}</div>
     </NativeCard>
   );

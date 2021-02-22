@@ -30,7 +30,7 @@ const useCategories = () => {
       return {
         ...state,
         categories: [...state.categories, category],
-        types: [...state.types, { [entry.id]: types }],
+        types: { ...state.types, [entry.id]: types },
         tags: [...state.tags, ...types, ...tags],
       };
     },

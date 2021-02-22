@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 export interface ButtonProps extends MuiButtonProps {
-  children: string;
+  children: string | React.ReactNode;
   loader?: boolean;
   href?: string;
   externalHref?: boolean;

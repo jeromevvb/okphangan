@@ -24,13 +24,14 @@ type NewUserInfo = {
   locale:string
 }
 
-const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:NewUserInfo):Promise<firebase.auth.UserCredential> => {
+const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:NewUserInfo):Promise<firebase.auth.UserCredential & {isNewUser:boolean}> => {
   const provider =
       providerName === "facebook" ? facebookProvider : googleProvider;
 
     const resultSignIn = await firebase.auth().signInWithPopup(provider);
+    const isNewUser = resultSignIn.additionalUserInfo?.isNewUser || false;
     // create new user
-    if (resultSignIn.additionalUserInfo?.isNewUser) {
+    if (isNewUser) {
       const uid = resultSignIn.user?.uid;
 
       const userModel = {
@@ -64,7 +65,7 @@ const loginWithSocial = async (providerName:'facebook' | 'google', newUserInfo:N
 
     } 
 
-    return resultSignIn;
+     return {...resultSignIn, isNewUser};
   }
 
 export default {loginWithSocial}

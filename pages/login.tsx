@@ -29,18 +29,21 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const initialValues: LoginCredentialsValues = loginCredentialsSchema.default();
 
+  console.log(router);
+
   /**
    *
    * @param values
    * @param formikHelpers
    */
 
-  const loginWithEmail = (
-    values: LoginCredentialsValues,
-    formikHelpers: FormikHelpers<LoginCredentialsValues>
-  ) => {
-    console.log(values, formikHelpers);
-  };
+  //TODO: If someone need to login with his email
+  // const loginWithEmail = (
+  //   values: LoginCredentialsValues,
+  //   formikHelpers: FormikHelpers<LoginCredentialsValues>
+  // ) => {
+  //   console.log(values, formikHelpers);
+  // };
 
   /**
    *
@@ -53,12 +56,17 @@ const Login: React.FC = () => {
         locale: router.locale as string,
       });
 
-      // if business redirect to onboaridng
-      if (userRole === "business") {
+      // if business and new user redirect to onboaridng
+      if (userRole === "business" && response.isNewUser) {
         return router.push("/onboarding");
       }
 
-      router.push("/");
+      // if user wants to visit a business
+      if (router.query?.redirectBusiness) {
+        return router.push(`/business/${router.query?.redirectBusiness}`);
+      }
+
+      return router.push("/");
     } catch (error) {
       setError(error.message);
     }
@@ -116,7 +124,7 @@ const Login: React.FC = () => {
               </Box>
             </Box>
 
-            <Subtitle strong gutterBottom>
+            {/* <Subtitle strong gutterBottom>
               Login with your email
             </Subtitle>
 
@@ -133,7 +141,7 @@ const Login: React.FC = () => {
               />
 
               <FormSubmitButton fullWidth>Connexion</FormSubmitButton>
-            </Form>
+            </Form> */}
           </Fragment>
         )}
       </WelcomeLayout>
