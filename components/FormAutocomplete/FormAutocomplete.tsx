@@ -21,6 +21,7 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     multiple = false,
     limitTags = -1,
   } = props;
+
   const {
     values,
     handleBlur,
@@ -28,6 +29,9 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     touched,
     errors,
   } = useFormikContext<FormikValues>();
+
+  console.log("====== tags", options);
+  console.log("====== tags values", values[name]);
 
   const handleChangeAutocomplete = (value: Array<string> | string) => {
     if (!value) {

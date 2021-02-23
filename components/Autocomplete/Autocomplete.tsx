@@ -90,9 +90,7 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
     }, []);
 
     console.log("===== parsedValue", parsedValue);
-  }
-
-  if (value) {
+  } else {
     parsedValue = options.find((option) => option.value === value) || null;
   }
 

@@ -13,9 +13,8 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
     setFieldValue("type", "");
   };
 
-  console.log("====== tags", tags);
-
-  const optionsTypes = types[values["category"]] || [];
+  const categoryValue = values["category"];
+  const typesOptions = types[categoryValue] || [];
 
   return (
     <div>
@@ -25,20 +24,20 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
         label="Category of your business"
         handleChange={handleChangeCategory}
       />
-      {values["category"] && (
+      {categoryValue && (
         <Fragment>
           <FormAutocomplete
             name="type"
-            options={optionsTypes}
+            options={typesOptions}
             label="Type of your business"
           />
-          {/* <FormAutocomplete
+          <FormAutocomplete
             multiple
             limitTags={5}
             name="tags"
             options={tags}
             label="Select some tags (max 5 tags)"
-          /> */}
+          />
         </Fragment>
       )}
     </div>

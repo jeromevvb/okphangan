@@ -2,7 +2,15 @@ import React from "react";
 import capitalize from "helpers/capitalize";
 import useCollection from "./useCollection";
 
-const useCategories = () => {
+type useCategoriesReturn = {
+  categories: Array<{ label: string; value: string }>;
+  tags: Array<{ label: string; value: string }>;
+  types: {
+    [categoryName: string]: Array<{ label: string; value: string }>;
+  };
+};
+
+const useCategories = (): useCategoriesReturn => {
   const { data, loading, error } = useCollection<{
     id: string;
     label: string;
@@ -10,7 +18,7 @@ const useCategories = () => {
     tags?: Array<string>;
   }>("categories");
 
-  if (error || !data) return { categories: [], tags: [], types: [] };
+  if (error || !data) return { categories: [], tags: [], types: {} };
 
   const result = data.reduce(
     (state, entry) => {
@@ -34,7 +42,7 @@ const useCategories = () => {
         tags: [...state.tags, ...types, ...tags],
       };
     },
-    { categories: [], tags: [], types: [] }
+    { categories: [], tags: [], types: {} }
   );
 
   return result;
