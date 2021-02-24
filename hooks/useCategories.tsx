@@ -8,6 +8,7 @@ type useCategoriesReturn = {
   types: {
     [categoryName: string]: Array<{ label: string; value: string }>;
   };
+  all: Array<{ label: string; value: string }>;
 };
 
 const useCategories = (): useCategoriesReturn => {
@@ -18,7 +19,7 @@ const useCategories = (): useCategoriesReturn => {
     tags?: Array<string>;
   }>("categories");
 
-  if (error || !data) return { categories: [], tags: [], types: {} };
+  if (error || !data) return { categories: [], tags: [], types: {}, all: [] };
 
   const result = data.reduce(
     (state, entry) => {
@@ -40,9 +41,10 @@ const useCategories = (): useCategoriesReturn => {
         categories: [...state.categories, category],
         types: { ...state.types, [entry.id]: types },
         tags: [...state.tags, ...types, ...tags],
+        all: [...state.all, category, ...types, ...tags],
       };
     },
-    { categories: [], tags: [], types: {} }
+    { categories: [], tags: [], types: {}, all: [] }
   );
 
   return result;

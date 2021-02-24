@@ -27,9 +27,9 @@ const Login: React.FC = () => {
   const router = useRouter();
   const [userRole, setUserRole] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const initialValues: LoginCredentialsValues = loginCredentialsSchema.default();
-
-  console.log(router);
+  const [isSocialLogin, setIsSocialLogin] = useState<
+    "facebook" | "google" | null
+  >(null);
 
   /**
    *
@@ -50,14 +50,18 @@ const Login: React.FC = () => {
    * @param providerName
    */
   const loginWithSocial = async (providerName: "facebook" | "google") => {
+    setIsSocialLogin(providerName);
+
     try {
       const response = await auth.loginWithSocial(providerName, {
         role: userRole,
         locale: router.locale as string,
       });
 
-      // if business and new user redirect to onboaridng
-      if (userRole === "business" && response.isNewUser) {
+      // if user is not onboarded, he has to go to onboarding page and do the process
+      if (response.isOnboarded === false) {
+        console.log("pass here");
+
         return router.push("/onboarding");
       }
 
@@ -66,9 +70,10 @@ const Login: React.FC = () => {
         return router.push(`/business/${router.query?.redirectBusiness}`);
       }
 
-      return router.push("/");
+      // return router.push("/");
     } catch (error) {
       setError(error.message);
+      setIsSocialLogin(null);
     }
   };
 
@@ -110,6 +115,7 @@ const Login: React.FC = () => {
                 <Box flex="50%" marginRight={2}>
                   <ButtonSocial
                     fullWidth
+                    loader={isSocialLogin === "facebook"}
                     social="facebook"
                     onClick={() => loginWithSocial("facebook")}
                   />
@@ -117,6 +123,7 @@ const Login: React.FC = () => {
                 <Box flex="50%">
                   <ButtonSocial
                     fullWidth
+                    loader={isSocialLogin === "google"}
                     social="google"
                     onClick={() => loginWithSocial("google")}
                   />

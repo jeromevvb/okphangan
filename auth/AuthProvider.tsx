@@ -2,12 +2,21 @@ import { useEffect, useState } from "react";
 import nookies from "nookies";
 import AuthContext from "./AuthContext";
 import firebase from "../services/firebase";
-import { UserModel } from "@models/auth";
+import { UserModel } from "@models/user";
 import toast from "react-hot-toast";
+import { Backdrop, CircularProgress, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+}));
 
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [userLoading, setUserLoading] = useState<boolean>(true);
+  const classes = useStyles();
 
   /**
    * Callback function used for firebase.auth.onIdTokenChanged().
@@ -15,19 +24,18 @@ const AuthProvider = ({ children }: any) => {
    * We fetch the idToken and append it to my auth state and store it.
    */
   const onIdTokenChanged = async (firebaseUser: firebase.User | null) => {
-    if (!firebaseUser) {
-      setUserLoading(false);
+    if (firebaseUser) {
+      const token = await firebaseUser.getIdToken();
+      const db = firebase.firestore().collection("users").doc(firebaseUser.uid);
+      const userData = await db.get();
+
+      setUser(userData.data() as UserModel);
+      //set cookie token
+      nookies.set(null, "token", token, {});
+    } else {
       setUser(null);
-      return nookies.set(null, "token", "", {});
+      nookies.set(null, "token", "", {});
     }
-
-    const token = await firebaseUser.getIdToken();
-    const db = firebase.firestore().collection("users").doc(firebaseUser.uid);
-    const userData = await db.get();
-
-    setUser(userData.data() as UserModel);
-    //set cookie token
-    nookies.set(null, "token", token, {});
 
     setUserLoading(false);
   };
@@ -58,8 +66,16 @@ const AuthProvider = ({ children }: any) => {
     return () => unsubscribe();
   }, []);
 
+  if (userLoading) {
+    return (
+      <Backdrop className={classes.backdrop} open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{ user, userLoading, signOut }}>
+    <AuthContext.Provider value={{ user, signOut }}>
       {children}
     </AuthContext.Provider>
   );

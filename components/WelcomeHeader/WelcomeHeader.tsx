@@ -4,6 +4,7 @@ import UserAvatar from "@components/UserAvatar";
 import { makeStyles } from "@material-ui/core";
 import Image from "next/image";
 import React from "react";
+import UserMenu from "widgets/navbar/UserMenu";
 
 export interface WelcomeHeaderProps {
   showLoginButton?: boolean;
@@ -39,7 +40,7 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
           </Button>
         </div>
       )}
-      {user && <UserAvatar></UserAvatar>}
+      {user && <UserMenu></UserMenu>}
     </div>
   );
 };

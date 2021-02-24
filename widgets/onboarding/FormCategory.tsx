@@ -6,8 +6,8 @@ import React, { Fragment } from "react";
 export interface FormCategoryProps {}
 
 const FormCategory: React.FC<FormCategoryProps> = ({}) => {
-  const { categories, types, tags } = useCategories();
-  const { values, setFieldValue } = useFormikContext<FormikValues>();
+  const { categories, types, tags, all } = useCategories();
+  const { values, errors, setFieldValue } = useFormikContext<FormikValues>();
 
   const handleChangeCategory = () => {
     setFieldValue("type", "");
@@ -15,6 +15,8 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
 
   const categoryValue = values["category"];
   const typesOptions = types[categoryValue] || [];
+
+  console.log("errors", errors);
 
   return (
     <div>

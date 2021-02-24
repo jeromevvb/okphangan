@@ -5,6 +5,7 @@ import { ButtonProps, withStyles } from "@material-ui/core";
 
 export interface ButtonSocialProps extends ButtonProps {
   social: "facebook" | "google";
+  loader: boolean;
 }
 
 const FacebookButton = withStyles({
@@ -42,11 +43,12 @@ const GoogleButton = withStyles({
 })(Button);
 
 const ButtonSocial: React.FC<ButtonSocialProps> = (props) => {
-  const { social, ...restProps } = props;
+  const { social, loader, ...restProps } = props;
 
   if (social === "facebook") {
     return (
       <FacebookButton
+        loader={loader}
         variant="contained"
         startIcon={<FaFacebookF />}
         {...restProps}
@@ -57,7 +59,12 @@ const ButtonSocial: React.FC<ButtonSocialProps> = (props) => {
   }
 
   return (
-    <GoogleButton variant="contained" startIcon={<FaGoogle />} {...restProps}>
+    <GoogleButton
+      loader={loader}
+      variant="contained"
+      startIcon={<FaGoogle />}
+      {...restProps}
+    >
       google
     </GoogleButton>
   );

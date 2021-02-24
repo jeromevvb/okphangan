@@ -59,7 +59,7 @@ const PhotosLightbox: React.FC<PhotosLightboxProps> = ({ photos }) => {
     <Box className={classes.photosContainer}>
       {photos.map((photoUrl, indexPhoto) => {
         return (
-          <div className={classes.imgContainer}>
+          <div key={photoUrl} className={classes.imgContainer}>
             <Image
               onClick={() => {
                 setLightboxPhotoIndex(indexPhoto);

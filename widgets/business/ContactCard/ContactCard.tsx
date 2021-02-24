@@ -1,9 +1,13 @@
 import React from "react";
 import { BusinessModel } from "@models/business";
-import { Box, makeStyles, Theme } from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import { HiOutlinePhone } from "react-icons/hi";
 import Subtitle from "@components/Subtitle";
-import { FaInternetExplorer } from "react-icons/fa";
+import {
+  FaFacebookSquare,
+  FaInstagram,
+  FaInternetExplorer,
+} from "react-icons/fa";
 import useAuth from "@auth/useAuth";
 import Card from "@components/Card";
 import BodyText from "@components/BodyText";
@@ -61,6 +65,36 @@ const ContactCard: React.FC<ContactCardProps> = ({ business }) => {
           {business.website && <Subtitle>{business.website}</Subtitle>}
           {!business.website && (
             <Subtitle color="textSecondary">No website</Subtitle>
+          )}
+        </Box>
+      </Box>
+      <Box marginBottom={2} display="flex" alignItems="center">
+        <Box marginRight={1}>
+          <FaFacebookSquare size={25} />
+        </Box>
+        <Box>
+          {business.facebookPage && (
+            <Link href={business.facebookPage} target="__blank">
+              <Subtitle>{business.facebookPage}</Subtitle>
+            </Link>
+          )}
+          {!business.facebookPage && (
+            <Subtitle color="textSecondary">No facebook page</Subtitle>
+          )}
+        </Box>
+      </Box>
+      <Box marginBottom={2} display="flex" alignItems="center">
+        <Box marginRight={1}>
+          <FaInstagram size={25} />
+        </Box>
+        <Box>
+          {business.instagramPage && (
+            <Link href={business.instagramPage} target="__blank">
+              <Subtitle>{business.instagramPage}</Subtitle>
+            </Link>
+          )}
+          {!business.instagramPage && (
+            <Subtitle color="textSecondary">No instagram page</Subtitle>
           )}
         </Box>
       </Box>

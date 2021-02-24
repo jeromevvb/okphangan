@@ -30,9 +30,6 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     errors,
   } = useFormikContext<FormikValues>();
 
-  console.log("====== tags", options);
-  console.log("====== tags values", values[name]);
-
   const handleChangeAutocomplete = (value: Array<string> | string) => {
     if (!value) {
       return setFieldValue(name, null);

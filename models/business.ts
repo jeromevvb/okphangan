@@ -12,11 +12,16 @@ const fbRegex = /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook
 
 const instaRegex = /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.instagram|instagram|insta)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig
 
+
+//TODO: make it work matches regex with not required field
+// maybe extend an object shape?
 export const businessCreationSchema = Yup.object().shape({
   name: Yup.string().matches(nameRegExp, 'Name is not valid, only use english alphabet').label("Name").default("").required(),
   website: Yup.string().label("Website").default(""),
-  facebookPage: Yup.string().matches(fbRegex,'Your facebook address is not valid').label("Facebook page").default(""),
-  instagramPage: Yup.string().matches(instaRegex,'Your instagram address is not valid').label("Instagram page").default(""),
+  // facebookPage: Yup.string().matches(fbRegex,'Your facebook address is not valid').label("Facebook page").default(""),
+  // facebookPage: Yup.string().matches(fbRegex,'Your facebook address is not valid').label("Facebook page").default(""),
+  instagramPage: Yup.string().label("Instagram page").default(""),
+  facebookPage: Yup.string().label("Facebook page").default(""),
   phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').label("Phone").default("").required(),
   email: Yup.string().email().label("Email").default("").required(),
   category: Yup.string().label('Category').default('').required(),
@@ -26,7 +31,7 @@ export const businessCreationSchema = Yup.object().shape({
   description:Yup.string().max(250).label("Description").default("").required(),
   logo:Yup.array(Yup.string().required()).ensure(),
   photos:Yup.array(Yup.string().required()).ensure(),
-  geocoding:Yup.object().shape({lat:Yup.number(), lng:Yup.number()})
+  geocoding:Yup.object().shape({lat:Yup.number(), lng:Yup.number()}).default({lat:0, lng:0})
 }).required();
 
 export type BusinessCreationValues = Yup.InferType<typeof businessCreationSchema>;

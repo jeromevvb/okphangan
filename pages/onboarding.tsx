@@ -8,7 +8,6 @@ import {
   BusinessCreationValues,
   businessCreationSchema,
   updateBusiness,
-  BusinessModel,
 } from "@models/business";
 import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
@@ -20,7 +19,7 @@ import FormShowIf from "@components/FormShowIf";
 import FormGoogleMaps from "@components/FormGoogleMaps";
 import { useRouter } from "next/router";
 import FormCategory from "widgets/onboarding/FormCategory";
-import useDocument from "@hooks/useDocument";
+import { onboardUser, UserModel } from "@models/user";
 
 interface OnboardingProps {}
 
@@ -40,8 +39,10 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
     try {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
-      const slug = await updateBusiness(values, user?.businessId);
-      // redirect
+      // update business
+      const slug = await updateBusiness(values, user?.businessId as string);
+      onboardUser(user as UserModel);
+      //redirect
       router.push(`/business/${slug}`);
       formikHelpers.setSubmitting(false);
     } catch (error) {
@@ -121,7 +122,7 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
 };
 
 const Onboarding = () => (
-  <UserAuthGranted role="business">
+  <UserAuthGranted role="business" onboarded={false}>
     <OnboardingComponent />
   </UserAuthGranted>
 );

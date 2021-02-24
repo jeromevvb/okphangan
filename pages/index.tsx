@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import useAuth from "../auth/useAuth";
 import WelcomeLayout from "@components/WelcomeLayout";
 import Page from "@components/Page";
-import WelcomeHeader from "@components/WelcomeHeader";
 
 // const useStyles = makeStyles((theme) => ());
 
 const Blog = () => {
   // const classes = useStyles();
   const router = useRouter();
-  const { user, userLoading } = useAuth();
+  const { user } = useAuth();
 
-  console.log(userLoading, user);
+  console.log(user);
 
   return (
     <Page
