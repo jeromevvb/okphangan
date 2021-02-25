@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MDAutocomplete, {
   AutocompleteProps as MDAutocompleteProps,
+  createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 import {
   FormHelperText,
@@ -15,7 +16,6 @@ import {
 
 export interface Option {
   inputValue?: string;
-  new?: boolean;
   label: string;
   value: string;
 }
@@ -26,6 +26,7 @@ export interface AutocompleteProps {
   error?: boolean;
   InputLabelProps?: InputLabelProps;
   multiple?: boolean;
+  freeSolo?: boolean;
   label: string;
   name: string;
   value: string | null | Array<string>;
@@ -47,6 +48,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const filter = createFilterOptions<Option | Option[]>();
+
 const Autocomplete: React.FC<AutocompleteProps> = (props) => {
   const {
     onChange,
@@ -58,36 +61,50 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
     label,
     value,
     multiple = false,
+    freeSolo,
     onBlur,
     name,
   } = props;
 
   const classes = useStyles();
-  let parsedValue: Option | Option[] | null = null;
+  let autocompleteValue: Option | Option[] | null = multiple ? [] : null;
 
   const handleChange = (
     event: React.ChangeEvent<{}>,
     option: Option[] | Option
   ) => {
+    // console.log(option);
+
     if (option instanceof Array) {
-      return onChange(option.map((n) => n.value));
+      const values = option.map((node: Option | string): string => {
+        if (node instanceof Object) {
+          return node.value;
+        }
+
+        return node;
+      });
+
+      console.log(values);
+
+      return onChange(values);
     }
 
     onChange(option.value);
   };
 
   if (value instanceof Array) {
-    parsedValue = value.reduce((state, node) => {
-      const option = options.find((option) => option.value === node);
+    autocompleteValue = value.reduce((state, item) => {
+      const option = options.find((option) => option.value === item);
 
       if (!option) {
-        return state;
+        return [...state, { label: item, value: item }];
       }
 
       return [...state, option];
     }, []);
   } else {
-    parsedValue = options.find((option) => option.value === value) || null;
+    autocompleteValue =
+      options.find((option) => option.value === value) || null;
   }
 
   return (
@@ -96,15 +113,29 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
         {label}
       </InputLabel>
       <MDAutocomplete
+        freeSolo={freeSolo}
         multiple={multiple}
         options={options}
         filterSelectedOptions
-        value={parsedValue}
-        getOptionLabel={(option: Option) => option.label}
-        getOptionSelected={(option: Option, optionSelected: Option) => {
-          return option.value === optionSelected.value;
+        value={autocompleteValue}
+        getOptionLabel={(option: Option) => {
+          return option.label;
         }}
         onChange={handleChange}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+
+          // Suggest the creation of a new value
+          if (params.inputValue !== "") {
+            filtered.push({
+              inputValue: params.inputValue,
+              label: `Add "${params.inputValue}"`,
+              value: params.inputValue,
+            });
+          }
+
+          return filtered;
+        }}
         renderInput={(params) => (
           <TextField
             name={name}

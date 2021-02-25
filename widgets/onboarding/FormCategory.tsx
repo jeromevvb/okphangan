@@ -16,8 +16,6 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
   const categoryValue = values["category"];
   const typesOptions = types[categoryValue] || [];
 
-  console.log("errors", errors);
-
   return (
     <div>
       <FormAutocomplete
@@ -35,6 +33,7 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
           />
           <FormAutocomplete
             multiple
+            freeSolo
             limitTags={5}
             name="tags"
             options={tags}

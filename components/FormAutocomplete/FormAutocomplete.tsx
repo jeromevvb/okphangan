@@ -9,6 +9,7 @@ interface FormAutocompleteProps {
   label: string;
   options: Array<Option>;
   multiple?: boolean;
+  freeSolo?: boolean;
   limitTags?: number;
 }
 
@@ -17,6 +18,7 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     name,
     options,
     label,
+    freeSolo,
     handleChange,
     multiple = false,
     limitTags = -1,
@@ -55,6 +57,7 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
       <Autocomplete
         multiple={multiple}
         label={label}
+        freeSolo={freeSolo}
         name={name}
         onBlur={handleBlur}
         error={isError}
