@@ -3,11 +3,18 @@ import { useRouter } from "next/router";
 import useAuth from "../auth/useAuth";
 import WelcomeLayout from "@components/WelcomeLayout";
 import Page from "@components/Page";
+import Title from "@components/Title";
+import { Box, makeStyles } from "@material-ui/core";
+import SearchBar from "@components/SearchBar/SearchBar";
 
-// const useStyles = makeStyles((theme) => ());
+const useStyles = makeStyles((theme) => ({
+  colorPrimary: {
+    color: theme.palette.primary.main,
+  },
+}));
 
 const Blog = () => {
-  // const classes = useStyles();
+  const classes = useStyles();
   const router = useRouter();
   const { user } = useAuth();
 
@@ -18,7 +25,16 @@ const Blog = () => {
       title="Be part of our community"
       description="We unite Phangan's people in order to create a better future for all of us"
     >
-      <WelcomeLayout>Hello</WelcomeLayout>
+      <WelcomeLayout>
+        <Box textAlign="center" margin="auto" paddingTop={8} maxWidth={"80%"}>
+          <Box marginBottom={1}>
+            <Title>
+              Explore the <span className={classes.colorPrimary}>paradise</span>
+            </Title>
+          </Box>
+          <SearchBar onChange={() => {}}></SearchBar>
+        </Box>
+      </WelcomeLayout>
     </Page>
   );
 };

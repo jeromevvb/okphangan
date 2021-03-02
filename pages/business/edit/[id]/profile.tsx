@@ -8,15 +8,11 @@ import {
 } from "@models/business";
 import { FormikHelpers } from "formik";
 import FormInputText from "@components/FormInputText";
-import FormInputUpload from "@components/FormInputUpload";
 import FormSubmitButton from "@components/FormSubmitButton";
-import useAuth from "@auth/useAuth";
-import { UserModel } from "@models/auth";
 import FormInputCheckbox from "@components/FormInputCheckbox";
 import FormShowIf from "@components/FormShowIf";
 import FormGoogleMaps from "@components/FormGoogleMaps";
-import { useRouter } from "next/router";
-import { Box, Grid } from "@material-ui/core";
+import { Box, Grid, InputLabel } from "@material-ui/core";
 import useMediaQuery from "@hooks/useMediaQuery";
 import toast from "react-hot-toast";
 import FormCategory from "widgets/onboarding/FormCategory";
@@ -85,6 +81,13 @@ const EditBusinessProfile: React.FC<EditBusinessProfileProps> = ({
               fullWidth
             />
 
+            <InputLabel>This phone number has a</InputLabel>
+            <Box display="flex">
+              <FormInputCheckbox name="hasWhatsapp" label="Whatsapp account" />
+              <FormInputCheckbox name="hasLine" label="Line account" />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6}>
             <FormInputText
               name="facebookPage"
               label="Your facebook page"
@@ -99,8 +102,6 @@ const EditBusinessProfile: React.FC<EditBusinessProfileProps> = ({
               helper=""
               fullWidth
             />
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
             <FormInputText
               name="description"
               label="A short description of your business (max 250 words)"

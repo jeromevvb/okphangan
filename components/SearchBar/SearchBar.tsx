@@ -1,27 +1,11 @@
 import React from "react";
-import MDAutocomplete, {
-  AutocompleteProps as MDAutocompleteProps,
-} from "@material-ui/lab/Autocomplete";
-import {
-  InputLabelProps,
-  lighten,
-  makeStyles,
-  TextField,
-  Theme,
-} from "@material-ui/core";
-
-export interface Option {
-  inputValue?: string;
-  label: string;
-  value: string;
-}
-
-export interface AutocompleteProps {
-  InputLabelProps?: InputLabelProps;
-  label: string;
-  // name: string;
-  // value: string | null | Array<string>;
-  options: Array<Option>;
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Box, lighten, makeStyles, TextField, Theme } from "@material-ui/core";
+import useCategories from "@hooks/useCategories";
+import { FaSearch } from "react-icons/fa";
+import InputAdornment from "@material-ui/core/InputAdornment";
+export interface SearchBarProps {
+  defaultSearch?: string;
   onChange(option: Array<string> | string): void;
   onBlur?(e: React.FocusEvent<any>): void;
 }
@@ -31,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: theme.shape.borderRadius,
     backgroundColor: "#EBEBEB",
     border: "1px solid #EBEBEB",
-    padding: "16px",
+    padding: "12px",
     transition: theme.transitions.create(["border-color"]),
     "&:focus": {
       borderColor: lighten(theme.palette.primary.main, 0.3),
@@ -39,31 +23,28 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Autocomplete: React.FC<AutocompleteProps> = (props) => {
-  const { onChange, options, onBlur } = props;
-
+const SearchBar: React.FC<SearchBarProps> = (props) => {
+  const { onChange, onBlur, defaultSearch } = props;
+  const { tags } = useCategories();
   const classes = useStyles();
 
-  const handleChange = (
-    event: React.ChangeEvent<{}>,
-    option: Option[] | Option
-  ) => {
+  const handleChange = (event: React.ChangeEvent<{}>, value: string) => {
     // onChange(option.value);
+
+    console.log(value);
   };
 
   return (
     <div>
-      <MDAutocomplete
-        options={options}
+      <Autocomplete
+        options={tags.map((opt) => opt.label)}
+        freeSolo
         filterSelectedOptions
-        // getOptionLabel={(option: Option) => option.label}
-        // getOptionSelected={(option: Option, optionSelected: Option) => {
-        //   return option.value === optionSelected.value;
-        // }}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
-            name={"searchbar"}
+            name="searchbar"
+            placeholder={"What are you looking for?"}
             variant="standard"
             classes={{ root: classes.input }}
             {...{
@@ -72,6 +53,11 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
                 ...params.InputProps,
                 disableUnderline: true,
                 onBlur,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <FaSearch />
+                  </InputAdornment>
+                ),
               },
             }}
           />
@@ -81,4 +67,4 @@ const Autocomplete: React.FC<AutocompleteProps> = (props) => {
   );
 };
 
-export default Autocomplete;
+export default SearchBar;

@@ -80,7 +80,7 @@ const EditBusiness = () => {
   }
 
   //TODO: Create 404 page.
-  if (!business) {
+  if (!business || user?.business?.id !== id) {
     return "";
   }
 

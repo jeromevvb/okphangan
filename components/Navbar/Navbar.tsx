@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core/styles";
 import { MdMenu } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
-import { Container } from "@material-ui/core";
+import { Container, Link } from "@material-ui/core";
 import UserMenu from "widgets/navbar/UserMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -107,12 +107,14 @@ const Navbar = () => {
               <MdMenu />
             </IconButton>
             <div className={classes.title}>
-              <Image
-                src="/images/logo-white.png"
-                alt="Logo OKPhangan"
-                width={200}
-                height={50}
-              />
+              <Link href="/">
+                <Image
+                  src="/images/logo-white.png"
+                  alt="Logo OKPhangan"
+                  width={200}
+                  height={50}
+                />
+              </Link>
             </div>
             <div>
               <div className={classes.search}>

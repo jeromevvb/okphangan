@@ -1,20 +1,25 @@
 import firebase from '@services/firebase'
+import { BusinessModel, createBusiness } from './business';
 
 export type UserModel = {
+  uid:string,
   displayName:string
   email:string
   photoURL:string, 
   onboarded:boolean,
   createdAt:firebase.firestore.Timestamp,
   role:'member' | 'business',
-  //if user has a business
-  businessId:string, 
   subscription : {
     plan:'free' | 'starter' | 'premium',
     startAt:firebase.firestore.Timestamp,
   }
   locale:'en' | 'th',
-  uid:string
+    //if user has a business
+  business : {
+    id:string
+    name:string,
+    slug:string
+  } | null,
 }
 
 export type UserLoginInfo = {
@@ -30,15 +35,14 @@ export type CreateUserResponse = {isNewUser:boolean, isOnboarded:boolean};
  * @param userCredentials 
  * @param newUserInfo 
  */
-const createUser = async (userCredentials:firebase.auth.UserCredential, newUserInfo:UserLoginInfo):Promise<CreateUserResponse> => {
+const createUser = async (userCredentials:firebase.auth.UserCredential, newUserInfo:UserLoginInfo):Promise<UserModel & {isNewUser:boolean}> => {
 
     const isNewUser = userCredentials.additionalUserInfo?.isNewUser || false;
     const isOnboarded = newUserInfo.role === 'business' ? false : true;
+    const uid = userCredentials.user?.uid as string
 
     // create new user
     if (isNewUser) {
-      const uid = userCredentials.user?.uid;
-
       const userModel = {
         ...newUserInfo,
         // firstName:resultSignIn.additionalUserInfo?.profile?.first_name,
@@ -48,6 +52,7 @@ const createUser = async (userCredentials:firebase.auth.UserCredential, newUserI
         photoURL:userCredentials.user?.photoURL, 
         onboarded:isOnboarded,
         createdAt:firebase.firestore.Timestamp.now(),
+        business:null,
         subscription:{
           plan:'free', 
           createdAt:firebase.firestore.Timestamp.now(),
@@ -57,27 +62,53 @@ const createUser = async (userCredentials:firebase.auth.UserCredential, newUserI
 
       // pre create business if user needs to be onboarded
       if(isOnboarded === false){
-        const createBusinessRequest = await firebase.firestore().collection("businesses").add(
-        {
-          userId:uid,
-           createdAt:firebase.firestore.Timestamp.now()
-        });
+       const businessId = await createBusiness(uid as string);
 
-        await firebase.firestore().collection("users").doc(uid).set({...userModel, businessId:createBusinessRequest.id});
+        await firebase.firestore().collection("users").doc(uid).set(
+          {
+            ...userModel, 
+            business:{
+              id:businessId,
+              name:'', 
+              slug:'' 
+            }
+          }
+      );
+
       }else{
         await firebase.firestore().collection("users").doc(uid).set({...userModel});
       }
     } 
 
-    return {isOnboarded, isNewUser};
+    const user = await getUser(uid);
+
+    return {...user, isNewUser};
   }
 
 /**
  * 
  * @param user 
  */
-const onboardUser = async (user:UserModel):Promise<void> => {
-   return firebase.firestore().collection('users').doc(user.uid).update({onboarded:true});
+const onboardUser = async (user:UserModel, business:{slug:string, id:string, name:string}):Promise<void> => {
+   return firebase.firestore().collection('users').doc(user.uid).update({onboarded:true,business});
 }
 
-  export {createUser, onboardUser};
+
+/**
+ * 
+ * @param userId 
+ */
+const getUser = async(userId:string):Promise<UserModel> => {
+
+  const requestUser = firebase
+        .firestore()
+        .collection("users")
+        .doc(userId);
+       
+  const response = await requestUser.get();
+  const data = response.data();
+
+  return data as UserModel;
+}
+
+export {createUser, onboardUser, getUser};

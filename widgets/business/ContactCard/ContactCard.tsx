@@ -1,12 +1,13 @@
 import React from "react";
 import { BusinessModel } from "@models/business";
-import { Box, Link } from "@material-ui/core";
+import { Box, Link, Tooltip } from "@material-ui/core";
 import { HiOutlinePhone } from "react-icons/hi";
 import Subtitle from "@components/Subtitle";
 import {
   FaFacebookSquare,
   FaInstagram,
   FaInternetExplorer,
+  FaWhatsappSquare,
 } from "react-icons/fa";
 import useAuth from "@auth/useAuth";
 import Card from "@components/Card";
@@ -49,12 +50,35 @@ const ContactCard: React.FC<ContactCardProps> = ({ business }) => {
 
   return (
     <Card title="Contact">
-      <Box marginBottom={2} display="flex" alignItems="center">
+      <Box
+        marginBottom={2}
+        display="flex"
+        alignItems="center"
+        alignContent="center"
+      >
         <Box marginRight={1}>
           <HiOutlinePhone size={25} />
         </Box>
-        <Box>
+        <Box marginRight={0.5}>
           <Subtitle>{business.phone}</Subtitle>
+        </Box>
+        <Box marginRight={0.5}>
+          {business.hasLine && (
+            <Tooltip title="This phone number has a line account">
+              <div>
+                <img width={25} height={25} src="/images/line-logo.png"></img>
+              </div>
+            </Tooltip>
+          )}
+        </Box>
+        <Box>
+          {business.hasWhatsapp && (
+            <Tooltip title="This phone number has a whatsapp account">
+              <div>
+                <FaWhatsappSquare size={25} color={"#25D366"} />
+              </div>
+            </Tooltip>
+          )}
         </Box>
       </Box>
       <Box marginBottom={2} display="flex" alignItems="center">

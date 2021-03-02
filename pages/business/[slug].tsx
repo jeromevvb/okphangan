@@ -42,7 +42,7 @@ const Business: React.FC<PlaceProps> = (props) => {
       ? business.photos.map((photoUrl) => photoUrl)
       : [];
 
-  const isOwner = business.id === user?.businessId;
+  const isOwner = business.id === user?.business?.id;
 
   return (
     <Page title={business.name} description={business.description}>
@@ -142,6 +142,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
       ...doc.data(),
       id: doc.id,
       createdAt: doc.data().createdAt.toDate().toString(),
+      updateAt: doc.data().updateAt.toDate().toString(),
     };
   });
 

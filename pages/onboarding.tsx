@@ -20,12 +20,15 @@ import FormGoogleMaps from "@components/FormGoogleMaps";
 import { useRouter } from "next/router";
 import FormCategory from "widgets/onboarding/FormCategory";
 import { onboardUser, UserModel } from "@models/user";
+import { Box, InputLabel } from "@material-ui/core";
 
 interface OnboardingProps {}
 
 const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
   const router = useRouter();
   const { user } = useAuth();
+
+  console.log(user);
 
   const initialValues = {
     ...businessCreationSchema.default(),
@@ -40,10 +43,13 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
       formikHelpers.setStatus(undefined);
       formikHelpers.setSubmitting(true);
       // update business
-      const slug = await updateBusiness(values, user?.businessId as string);
-      onboardUser(user as UserModel);
+      const createdBusiness = await updateBusiness(
+        values,
+        user?.business?.id as string
+      );
+      onboardUser(user as UserModel, createdBusiness);
       //redirect
-      router.push(`/business/${slug}`);
+      router.push(`/business/${createdBusiness.slug}`);
       formikHelpers.setSubmitting(false);
     } catch (error) {
       formikHelpers.setStatus({ error: error.message });
@@ -69,11 +75,7 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
 
           <FormInputText label="Email" name="email" fullWidth />
 
-          <FormInputText
-            name="website"
-            label="Do you have a website?"
-            fullWidth
-          />
+          <FormInputText name="website" label="Website" fullWidth />
 
           <FormInputText
             name="phone"
@@ -81,6 +83,12 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
             helper="This number will be display on your business page"
             fullWidth
           />
+
+          <InputLabel>This phone number has a</InputLabel>
+          <Box display="flex">
+            <FormInputCheckbox name="hasWhatsapp" label="Whatsapp account" />
+            <FormInputCheckbox name="hasLine" label="Line account" />
+          </Box>
 
           <FormCategory></FormCategory>
 
@@ -95,7 +103,7 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
 
           <FormInputUpload
             maxFiles={1}
-            firestoreUrl={`businesses/${user?.businessId}`}
+            firestoreUrl={`businesses/${user?.business?.id}`}
             name="logo"
             async={false}
             label="Logo de votre business"

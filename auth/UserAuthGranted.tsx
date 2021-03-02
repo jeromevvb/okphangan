@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 interface UserAuthGrantedProps {
   children: any;
   role?: "business" | "member";
-  onboarded: boolean;
+  onboarded?: boolean;
 }
 
 const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
@@ -15,6 +15,11 @@ const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
 }) => {
   const { user } = useAuth();
   const router = useRouter();
+
+  if (!user) {
+    router.replace("/");
+    return "";
+  }
 
   //TODO: SHOW PAGE 404
   if (user && user.onboarded !== onboarded) {
@@ -26,10 +31,6 @@ const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
     router.replace("/");
     return "";
   }
-
-  // useEffect(() => {
-
-  // }, [user]);
 
   return children;
 };

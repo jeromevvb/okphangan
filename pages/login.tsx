@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-import { FormikHelpers } from "formik";
+import React, { Fragment, useContext, useState } from "react";
 import * as Yup from "yup";
 
 import Page from "@components/Page";
@@ -9,22 +8,21 @@ import { Box } from "@material-ui/core";
 import RoleSelector from "widgets/login/RoleSelector";
 import ButtonSocial from "@components/ButtonSocial";
 import Divider from "@components/Divider";
-import Form from "@components/Form";
-import FormInputText from "@components/FormInputText";
-import FormSubmitButton from "@components/FormSubmitButton";
 import Subtitle from "@components/Subtitle";
 import auth from "@models/auth";
 import { useRouter } from "next/router";
 import Alert from "@material-ui/lab/Alert";
+import AuthContext from "@auth/AuthContext";
 
 const loginCredentialsSchema = Yup.object().shape({
   email: Yup.string().defined().email().label("Email").default(""),
 });
 
-type LoginCredentialsValues = Yup.InferType<typeof loginCredentialsSchema>;
+// type LoginCredentialsValues = Yup.InferType<typeof loginCredentialsSchema>;
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const { setUser } = useContext(AuthContext);
   const [userRole, setUserRole] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isSocialLogin, setIsSocialLogin] = useState<
@@ -53,21 +51,25 @@ const Login: React.FC = () => {
     setIsSocialLogin(providerName);
 
     try {
-      const response = await auth.loginWithSocial(providerName, {
+      const user = await auth.loginWithSocial(providerName, {
         role: userRole,
         locale: router.locale as string,
       });
 
-      // if user is not onboarded, he has to go to onboarding page and do the process
-      if (response.isOnboarded === false) {
-        console.log("pass here");
+      setUser(user);
+      console.log("LOGIN SUCCESSFULLY !");
 
-        return router.push("/onboarding");
+      // if user is not onboarded, he has to go to onboarding page and do the process
+      if (user.onboarded === false) {
+        console.log("ONBOARDING REDIRECTION !");
+        router.push("/onboarding");
+        return;
       }
 
       // if user wants to visit a business
       if (router.query?.redirectBusiness) {
-        return router.push(`/business/${router.query?.redirectBusiness}`);
+        router.push(`/business/${router.query?.redirectBusiness}`);
+        return;
       }
 
       // return router.push("/");

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import nookies from "nookies";
 import AuthContext from "./AuthContext";
 import firebase from "../services/firebase";
-import { UserModel } from "@models/user";
+import { getUser, UserModel } from "@models/user";
 import toast from "react-hot-toast";
 import { Backdrop, CircularProgress, makeStyles } from "@material-ui/core";
 
@@ -26,10 +26,10 @@ const AuthProvider = ({ children }: any) => {
   const onIdTokenChanged = async (firebaseUser: firebase.User | null) => {
     if (firebaseUser) {
       const token = await firebaseUser.getIdToken();
-      const db = firebase.firestore().collection("users").doc(firebaseUser.uid);
-      const userData = await db.get();
-
-      setUser(userData.data() as UserModel);
+      const requestUser = await getUser(firebaseUser.uid);
+      if (requestUser) {
+        setUser(requestUser);
+      }
       //set cookie token
       nookies.set(null, "token", token, {});
     } else {
@@ -75,7 +75,7 @@ const AuthProvider = ({ children }: any) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signOut }}>
+    <AuthContext.Provider value={{ user, setUser, signOut }}>
       {children}
     </AuthContext.Provider>
   );
