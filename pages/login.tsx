@@ -13,6 +13,7 @@ import auth from "@models/auth";
 import { useRouter } from "next/router";
 import Alert from "@material-ui/lab/Alert";
 import AuthContext from "@auth/AuthContext";
+import toast from "react-hot-toast";
 
 const loginCredentialsSchema = Yup.object().shape({
   email: Yup.string().defined().email().label("Email").default(""),
@@ -56,8 +57,8 @@ const Login: React.FC = () => {
         locale: router.locale as string,
       });
 
+      toast.success("Successfully login!");
       setUser(user);
-      console.log("LOGIN SUCCESSFULLY !");
 
       // if user is not onboarded, he has to go to onboarding page and do the process
       if (user.onboarded === false) {
@@ -72,7 +73,7 @@ const Login: React.FC = () => {
         return;
       }
 
-      // return router.push("/");
+      return router.push("/");
     } catch (error) {
       setError(error.message);
       setIsSocialLogin(null);

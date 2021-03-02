@@ -1,45 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
-import useAuth from "../auth/useAuth";
-import WelcomeLayout from "@components/WelcomeLayout";
-import Page from "@components/Page";
-import Title from "@components/Title";
-import { Box, makeStyles } from "@material-ui/core";
-import SearchBar from "@components/SearchBar/SearchBar";
+import Home from "./home";
 
-const useStyles = makeStyles((theme) => ({
-  colorPrimary: {
-    color: theme.palette.primary.main,
-  },
-}));
-
-const Blog = () => {
-  const classes = useStyles();
-  const router = useRouter();
-  const { user } = useAuth();
-
-  console.log(user);
-
-  return (
-    <Page
-      title="Be part of our community"
-      description="We unite Phangan's people in order to create a better future for all of us"
-    >
-      <WelcomeLayout>
-        <Box textAlign="center" margin="auto" paddingTop={8} maxWidth={"80%"}>
-          <Box marginBottom={1}>
-            <Title>
-              Explore the <span className={classes.colorPrimary}>paradise</span>
-            </Title>
-          </Box>
-          <SearchBar onChange={() => {}}></SearchBar>
-        </Box>
-      </WelcomeLayout>
-    </Page>
-  );
+const Index = () => {
+  return <Home></Home>;
 };
 
-export default Blog;
+export default Index;
 
 // import React, { useState } from "react";
 // import firebase from "../services/firebase";

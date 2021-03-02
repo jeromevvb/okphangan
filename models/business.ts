@@ -90,4 +90,16 @@ const updateBusiness = async (businessForm:BusinessCreationValues, businessId:st
 
 
 
-export {updateBusiness,createBusiness}
+const searchBusiness = async (search:string):Promise<Array<BusinessModel>> => {
+
+  const request = await firebase
+  .firestore()
+  .collection("businesses")
+  .where("tags", "array-contains", search)
+  .get();
+
+  return request.docs.map(doc=>doc.data() as BusinessModel);
+}
+
+
+export {updateBusiness,createBusiness,searchBusiness}

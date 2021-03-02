@@ -1,10 +1,19 @@
 import useAuth from "@auth/useAuth";
 import Button from "@components/Button";
 import UserAvatar from "@components/UserAvatar";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
 import { useRouter } from "next/router";
 import React, { useState, Fragment, useRef } from "react";
+import { HiOutlineLogout } from "react-icons/hi";
+import { MdBusinessCenter } from "react-icons/md";
 
+import Divider from "@material-ui/core/Divider";
 export interface UserMenuProps {}
 
 const UserMenu: React.FC<UserMenuProps> = ({}) => {
@@ -19,6 +28,10 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
 
   const handleSignIn = () => {
     return router.push("/login");
+  };
+  const handleClickBusiness = () => {
+    if (!user?.business) return;
+    return router.push(`/business/${user.business.slug}`);
   };
 
   return (
@@ -46,7 +59,29 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
         open={openMenu}
         onClose={() => setOpenMenu(false)}
       >
-        {user && <MenuItem onClick={handleClickLogout}>Logout</MenuItem>}
+        {user && (
+          <div>
+            {user.business && (
+              <div>
+                <MenuItem onClick={handleClickBusiness}>
+                  <ListItemIcon>
+                    <MdBusinessCenter></MdBusinessCenter>
+                  </ListItemIcon>
+                  {user.business.name}
+                </MenuItem>
+                <Box padding="10px 0">
+                  <Divider />
+                </Box>
+              </div>
+            )}
+            <MenuItem onClick={handleClickLogout}>
+              <ListItemIcon>
+                <HiOutlineLogout></HiOutlineLogout>
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </div>
+        )}
         {!user && <MenuItem onClick={handleSignIn}>Sign in</MenuItem>}
       </Menu>
     </Fragment>

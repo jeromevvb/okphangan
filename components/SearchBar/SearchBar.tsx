@@ -1,12 +1,13 @@
 import React from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Box, lighten, makeStyles, TextField, Theme } from "@material-ui/core";
+import { lighten, makeStyles, TextField, Theme } from "@material-ui/core";
 import useCategories from "@hooks/useCategories";
 import { FaSearch } from "react-icons/fa";
 import InputAdornment from "@material-ui/core/InputAdornment";
+
 export interface SearchBarProps {
   defaultSearch?: string;
-  onChange(option: Array<string> | string): void;
+  onChange(search: string): void;
   onBlur?(e: React.FocusEvent<any>): void;
 }
 
@@ -24,14 +25,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const SearchBar: React.FC<SearchBarProps> = (props) => {
-  const { onChange, onBlur, defaultSearch } = props;
+  const { onChange, onBlur, defaultSearch = "" } = props;
   const { tags } = useCategories();
   const classes = useStyles();
 
   const handleChange = (event: React.ChangeEvent<{}>, value: string) => {
-    // onChange(option.value);
-
-    console.log(value);
+    onChange(value);
   };
 
   return (
@@ -39,6 +38,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
       <Autocomplete
         options={tags.map((opt) => opt.label)}
         freeSolo
+        value={defaultSearch}
         filterSelectedOptions
         onChange={handleChange}
         renderInput={(params) => (
