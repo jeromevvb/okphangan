@@ -32,7 +32,7 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
 
   const initialValues = {
     ...businessCreationSchema.default(),
-    email: user?.email,
+    email: user?.email as string,
   };
 
   const handleSubmit = async (

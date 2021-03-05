@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useState } from "react";
 import * as Yup from "yup";
-
 import Page from "@components/Page";
 import WelcomeLayout from "@components/WelcomeLayout";
 import PageTitle from "@components/PageTitle";

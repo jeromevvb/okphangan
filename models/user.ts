@@ -1,5 +1,5 @@
 import firebase from '@services/firebase'
-import { BusinessModel, createBusiness } from './business';
+import { createBusiness } from './business';
 
 export type UserModel = {
   uid:string,

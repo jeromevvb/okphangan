@@ -3,7 +3,7 @@ import { Meta, Story } from "@storybook/react/types-6-0";
 import InputUpload, { InputUploadProps } from "./InputUpload";
 
 const Template: Story<InputUploadProps> = (args) => (
-  <InputUpload onDelete={() => {}} onUpload={() => {}} {...args} />
+  <InputUpload files={[]} onDelete={() => {}} onUpload={() => {}} {...args} />
 );
 
 export const Default = Template.bind({});

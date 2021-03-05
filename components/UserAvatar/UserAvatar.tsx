@@ -1,8 +1,7 @@
-import useAuth from "@auth/useAuth";
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import { Box } from "@material-ui/core";
-import { UserModel } from "@models/auth";
+import { UserModel } from "@models/user";
 
 export interface UserAvatarProps {
   user: UserModel | null;

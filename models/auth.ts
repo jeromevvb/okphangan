@@ -1,8 +1,7 @@
-import facebookProvider from '../auth/providers/facebook';
-import googleProvider from '../auth/providers/google';
+import facebookProvider from '@auth/providers/facebook';
+import googleProvider from '@auth/providers/google';
 import firebase from '@services/firebase'
-import { createUser, UserLoginInfo, CreateUserResponse, UserModel } from './user';
-
+import { createUser, UserLoginInfo, UserModel } from './user';
 
 const loginWithSocial = async (providerName:'facebook' | 'google', userInfos:UserLoginInfo):Promise<UserModel> => {
   const provider =
