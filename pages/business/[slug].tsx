@@ -42,6 +42,8 @@ const Business: React.FC<PlaceProps> = (props) => {
       ? business.photos.map((photoUrl) => photoUrl)
       : [];
 
+  console.log(user);
+
   const isOwner = business.id === user?.business?.id;
 
   return (
