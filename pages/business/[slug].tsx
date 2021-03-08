@@ -1,5 +1,10 @@
 import React from "react";
-import { GetStaticPaths, GetStaticProps } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetStaticPaths,
+  GetStaticProps,
+} from "next";
 import firebase from "@services/firebase";
 import Page from "@components/Page";
 import { BusinessModel } from "@models/business";
@@ -109,7 +114,7 @@ const Business: React.FC<PlaceProps> = (props) => {
             <Geolocation
               hasGeocoding={business.hasGeocoding}
               geocoding={business.geocoding}
-            ></Geolocation>
+            />
           </Grid>
         </Grid>
       </Container>
@@ -119,20 +124,9 @@ const Business: React.FC<PlaceProps> = (props) => {
 
 export default Business;
 
-// This function gets called at build time
-export const getStaticPaths: GetStaticPaths = async () => {
-  const request = await firebase.firestore().collection("businesses").get();
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const slug = context.params?.slug;
 
-  // // Get the paths we want to pre-render based on posts
-  const paths = request.docs.map((doc) => `/business/${doc.data().slug}`);
-
-  // // We'll pre-render only these paths at build time.
-  // // { fallback: false } means other routes should 404.
-  return { paths, fallback: false };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
-  const { slug } = params;
   const request = await firebase
     .firestore()
     .collection("businesses")
@@ -148,11 +142,15 @@ export const getStaticProps: GetStaticProps = async ({ params }: Params) => {
     };
   });
 
+  if (result.length === 0) {
+    return {
+      notFound: true,
+    };
+  }
+
   const business = { ...result[0], id: result[0].id };
 
   return {
-    props: {
-      business,
-    },
+    props: { business }, // will be passed to the page component as props
   };
-};
+}
