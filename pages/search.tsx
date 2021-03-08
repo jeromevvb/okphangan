@@ -43,7 +43,7 @@ const Home = () => {
 
     const doRequest = async () => {
       if (!query) return;
-      console.log("changed....", query, query.toLowerCase());
+
       const response = await searchBusiness(query.toLowerCase());
       setResults(response);
     };
@@ -62,8 +62,6 @@ const Home = () => {
       shallow: true,
     });
   };
-
-  console.log(query);
 
   return (
     <Page
@@ -89,6 +87,11 @@ const Home = () => {
               </Box>
             </Fragment>
           )}
+          {results.length === 0 && (
+            <Box marginTop={4} textAlign="center">
+              <Subtitle>We haven't found what you're looking for =(</Subtitle>
+            </Box>
+          )}
         </Box>
       </Container>
     </Page>
@@ -105,7 +108,7 @@ const BusinessCard: React.FC<{ business: BusinessModel }> = ({ business }) => {
 
   return (
     <Card onClick={handleClick} className={classes.cardRoot}>
-      <Box textAlign="center">
+      <Box textAlign="center" marginTop={1}>
         <BusinessAvatar business={business} />
 
         <Subtitle strong>{business.name.toUpperCase()}</Subtitle>
@@ -113,7 +116,7 @@ const BusinessCard: React.FC<{ business: BusinessModel }> = ({ business }) => {
           {capitalize(business.type)} - {capitalize(business.category)}
         </BodyText>
       </Box>
-      <Box marginTop={1}>
+      <Box marginTop={2}>
         {business.tags instanceof Array &&
           business.tags.map((tag: string) => (
             <Box key={tag} margin={0.2} display="inline-flex">
