@@ -42,6 +42,8 @@ const Business: React.FC<PlaceProps> = (props) => {
   const { business } = props;
   const { user } = useAuth();
 
+  console.log(user);
+
   const photos: Array<string> =
     business.photos instanceof Array
       ? business.photos.map((photoUrl) => photoUrl)

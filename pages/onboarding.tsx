@@ -21,12 +21,13 @@ import { useRouter } from "next/router";
 import FormCategory from "widgets/onboarding/FormCategory";
 import { onboardUser, UserModel } from "@models/user";
 import { Box, InputLabel } from "@material-ui/core";
+import toast from "react-hot-toast";
 
 interface OnboardingProps {}
 
 const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   console.log(user);
 
@@ -47,7 +48,12 @@ const OnboardingComponent: React.FC<OnboardingProps> = ({}) => {
         values,
         user?.business?.id as string
       );
-      onboardUser(user as UserModel, createdBusiness);
+
+      const updatedUser = await onboardUser(user as UserModel, createdBusiness);
+
+      toast.success("Successfully onboarded! Welcome!");
+      setUser(updatedUser);
+
       //redirect
       router.push(`/business/${createdBusiness.slug}`);
       formikHelpers.setSubmitting(false);

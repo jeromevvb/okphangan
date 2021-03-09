@@ -11,6 +11,7 @@ interface FormAutocompleteProps {
   multiple?: boolean;
   freeSolo?: boolean;
   limitTags?: number;
+  helper?: string;
 }
 
 const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
@@ -20,6 +21,7 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
     label,
     freeSolo,
     handleChange,
+    helper,
     multiple = false,
     limitTags = -1,
   } = props;
@@ -65,6 +67,7 @@ const FormAutocomplete: React.FC<FormAutocompleteProps> = (props) => {
         value={values[name]}
         options={options}
         onChange={handleChangeAutocomplete}
+        helper={helper}
       />
     </Box>
   );

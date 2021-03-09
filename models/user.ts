@@ -89,10 +89,13 @@ const createUser = async (userCredentials:firebase.auth.UserCredential, newUserI
  * 
  * @param user 
  */
-const onboardUser = async (user:UserModel, business:{slug:string, id:string, name:string}):Promise<void> => {
-   return firebase.firestore().collection('users').doc(user.uid).update({onboarded:true,business});
-}
+const onboardUser = async (user:UserModel, business:{slug:string, id:string, name:string}):Promise<UserModel> => {
+   await firebase.firestore().collection('users').doc(user.uid).update({onboarded:true, business});
 
+   const updatedUser = await getUser(user.uid);
+   
+   return updatedUser;
+}
 
 /**
  * 

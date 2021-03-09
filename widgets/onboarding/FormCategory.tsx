@@ -37,7 +37,7 @@ const FormCategory: React.FC<FormCategoryProps> = ({}) => {
             limitTags={5}
             name="tags"
             options={tags}
-            label="Select some tags (max 5 tags)"
+            label="Add some tags (max 5 tags)"
           />
         </Fragment>
       )}

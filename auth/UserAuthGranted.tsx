@@ -16,21 +16,20 @@ const UserAuthGranted: React.FC<UserAuthGrantedProps> = ({
   const { user } = useAuth();
   const router = useRouter();
 
-  if (!user) {
-    router.replace("/");
-    return "";
-  }
+  useEffect(() => {
+    if (!user) {
+      router.replace("/");
+    }
 
-  //TODO: SHOW PAGE 404
-  if (user && user.onboarded !== onboarded) {
-    router.replace("/");
-    return "";
-  }
+    //TODO: SHOW PAGE 404
+    if (user && user.onboarded !== onboarded) {
+      router.replace("/");
+    }
 
-  if (user && role && user.role !== role) {
-    router.replace("/");
-    return "";
-  }
+    if (user && role && user.role !== role) {
+      router.replace("/");
+    }
+  }, []);
 
   return children;
 };

@@ -7,8 +7,11 @@ import theme from "../theme";
 import { Toaster } from "react-hot-toast";
 
 import NextNprogress from "nextjs-progressbar";
+import useRouterScroll from "@hooks/useRouterScroll";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  // Make sure pages scroll to the top after we navigate to them using `next/router`
+  useRouterScroll();
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");

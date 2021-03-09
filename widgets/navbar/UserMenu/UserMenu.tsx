@@ -14,9 +14,11 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { MdBusinessCenter } from "react-icons/md";
 
 import Divider from "@material-ui/core/Divider";
-export interface UserMenuProps {}
+export interface UserMenuProps {
+  onlyAvatar?: boolean;
+}
 
-const UserMenu: React.FC<UserMenuProps> = ({}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ onlyAvatar = false }) => {
   const { user, signOut } = useAuth();
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -33,6 +35,10 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
     if (!user?.business) return;
     return router.push(`/business/${user.business.slug}`);
   };
+
+  if (onlyAvatar) {
+    return <UserAvatar user={user} />;
+  }
 
   return (
     <Fragment>

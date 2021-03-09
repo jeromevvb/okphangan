@@ -1,7 +1,7 @@
 import useAuth from "@auth/useAuth";
 import Button from "@components/Button";
-import UserAvatar from "@components/UserAvatar";
-import { makeStyles } from "@material-ui/core";
+
+import { Box, makeStyles } from "@material-ui/core";
 import Image from "next/image";
 import React from "react";
 import UserMenu from "widgets/navbar/UserMenu";
@@ -40,7 +40,11 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
           </Button>
         </div>
       )}
-      {user && <UserMenu></UserMenu>}
+      {user && (
+        <Box>
+          <UserMenu onlyAvatar></UserMenu>
+        </Box>
+      )}
     </div>
   );
 };
