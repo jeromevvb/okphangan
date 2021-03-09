@@ -59,22 +59,32 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+const tabs: { [index: string]: string } = {
+  profile: "Profile",
+  photos: "Logo & Photos",
+  blog: "Blog",
+  deals: "Hot deals",
+};
+
 const EditBusiness = () => {
   const router = useRouter();
   const { user } = useAuth();
   const classes = useStyles();
 
   const id = router.query.id as string;
-  const defaultTab = router.query.tab ? parseInt(router.query.tab) : 0;
+  const defaultTab = router.query.tab
+    ? (router.query.tab as string)
+    : "profile";
 
-  const [tab, setTab] = useState<number>(defaultTab);
+  const [tab, setTab] = useState<number>(Object.keys(tabs).indexOf(defaultTab));
 
   const { loading, data: business, error } = useDocument<BusinessModel>(
     `businesses/${id}`
   );
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
-    router.push(`/business/edit/${id}?tab=${newValue}`, undefined, {
+    const tabName = Object.keys(tabs)[newValue];
+    router.push(`/business/edit/${id}?tab=${tabName}`, undefined, {
       shallow: true,
     });
 
@@ -124,19 +134,12 @@ const EditBusiness = () => {
               indicatorColor="primary"
               onChange={handleChangeTab}
             >
-              <Tab
-                label="Profile"
-                classes={{ selected: classes.tabSelected }}
-              />
-              <Tab
-                label="Logo & Photos"
-                classes={{ selected: classes.tabSelected }}
-              />
-              <Tab label="Blog" classes={{ selected: classes.tabSelected }} />
-              <Tab
-                label="Hot deals"
-                classes={{ selected: classes.tabSelected }}
-              />
+              {Object.keys(tabs).map((tab) => (
+                <Tab
+                  label={tabs[tab]}
+                  classes={{ selected: classes.tabSelected }}
+                />
+              ))}
             </Tabs>
 
             <TabPanel value={tab} index={0}>
