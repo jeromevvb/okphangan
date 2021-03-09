@@ -46,6 +46,7 @@ const UserMenu: React.FC<UserMenuProps> = ({}) => {
 
       <Menu
         elevation={1}
+        getContentAnchorEl={null}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",

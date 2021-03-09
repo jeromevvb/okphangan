@@ -18,7 +18,7 @@ const EditBusinessPhotos: React.FC<EditBusinessPhotosProps> = ({
             name="logo"
             maxFiles={1}
             firestoreUrl={`businesses/${business.id}`}
-            label="Logo de votre business"
+            label="Logo of your business"
             DropzoneProps={{ accept: "image/jpeg, image/png" }}
           />
 
@@ -26,7 +26,7 @@ const EditBusinessPhotos: React.FC<EditBusinessPhotosProps> = ({
             name="photos"
             maxFiles={5}
             firestoreUrl={`businesses/${business.id}`}
-            label="Photos de votre business"
+            label="Best pictures of your business"
             DropzoneProps={{ accept: "image/jpeg, image/png" }}
           />
         </Grid>

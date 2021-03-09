@@ -44,7 +44,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
         renderInput={(params) => (
           <TextField
             name="searchbar"
-            placeholder={"What are you looking for?"}
+            placeholder="What are you looking for?"
             variant="standard"
             classes={{ root: classes.input }}
             {...{

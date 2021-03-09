@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Page from "@components/Page";
 import { BusinessModel } from "@models/business";
 import Navbar from "@components/Navbar";
@@ -21,6 +21,8 @@ import EditBusinessProfile from "./profile";
 import EditBusinessPhotos from "./photos";
 import { VscPreview } from "react-icons/vsc";
 import Button from "@components/Button";
+import AlertTitle from "@material-ui/lab/AlertTitle";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme: Theme) => ({
   backdrop: {
@@ -58,16 +60,24 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const EditBusiness = () => {
+  const router = useRouter();
   const { user } = useAuth();
   const classes = useStyles();
-  const router = useRouter();
-  const [tab, setTab] = useState<number>(0);
+
   const id = router.query.id as string;
+  const defaultTab = router.query.tab ? parseInt(router.query.tab) : 0;
+
+  const [tab, setTab] = useState<number>(defaultTab);
+
   const { loading, data: business, error } = useDocument<BusinessModel>(
     `businesses/${id}`
   );
 
   const handleChangeTab = (event: React.ChangeEvent<{}>, newValue: number) => {
+    router.push(`/business/edit/${id}?tab=${newValue}`, undefined, {
+      shallow: true,
+    });
+
     setTab(newValue);
   };
 
@@ -89,29 +99,23 @@ const EditBusiness = () => {
       <Page title={business.name}>
         <Navbar />
         <Container>
-          <Box
-            display="flex"
-            marginBottom={4}
-            alignContent="center"
-            alignItems="center"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            marginTop={4}
-          >
-            <Box>
-              <BusinessHeader business={business} />
-            </Box>
-
-            <Box>
-              <Button
-                href={`/business/${business.slug}`}
-                variant="contained"
-                color="primary"
-                startIcon={<VscPreview />}
-              >
-                Go to my page
-              </Button>
-            </Box>
+          <Box marginBottom={4} marginTop={4}>
+            <BusinessHeader
+              business={business}
+              rightAction={
+                <Fragment>
+                  <Button
+                    fullWidth
+                    href={`/business/${business.slug}`}
+                    variant="contained"
+                    color="primary"
+                    startIcon={<VscPreview />}
+                  >
+                    Go to my page
+                  </Button>
+                </Fragment>
+              }
+            />
           </Box>
           <Box>
             <Tabs
@@ -142,10 +146,22 @@ const EditBusiness = () => {
               <EditBusinessPhotos business={business} />
             </TabPanel>
             <TabPanel value={tab} index={2}>
-              Item 3
+              <Alert severity="info">
+                <AlertTitle>
+                  Blog - <strong>available soon!</strong>
+                </AlertTitle>
+                Post content on our platform and share automatically to your
+                social networks.
+              </Alert>
             </TabPanel>
             <TabPanel value={tab} index={3}>
-              Item 4
+              <Alert severity="info">
+                <AlertTitle>
+                  Hot deals - <strong>available soon!</strong>
+                </AlertTitle>
+                Share your current hot deals (promotions) and send automatically
+                to the community.
+              </Alert>
             </TabPanel>
           </Box>
         </Container>

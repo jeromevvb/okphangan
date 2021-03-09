@@ -12,8 +12,9 @@ import {
 } from "@material-ui/core/styles";
 import { MdMenu } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
-import { Container, Link } from "@material-ui/core";
+import { Box, Container, Link } from "@material-ui/core";
 import UserMenu from "widgets/navbar/UserMenu";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,6 +93,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Navbar = () => {
   const classes = useStyles();
+  const router = useRouter();
+
+  const handleClickSearch = () => {
+    router.push("/search");
+  };
+
+  const handleClickLogo = () => {
+    router.push("/");
+  };
 
   return (
     <AppBar position="static" classes={{ root: classes.appBarRoot }}>
@@ -107,16 +117,21 @@ const Navbar = () => {
               <MdMenu />
             </IconButton>
             <div className={classes.title}>
-              <Link href="/">
+              <Box onClick={handleClickLogo}>
                 <Image
                   src="/images/logo-white.png"
                   alt="Logo OKPhangan"
                   width={200}
                   height={50}
                 />
-              </Link>
+              </Box>
             </div>
             <div>
+              <IconButton color="inherit" onClick={handleClickSearch}>
+                <MdSearch />
+              </IconButton>
+            </div>
+            {/* <div>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
                   <MdSearch />
@@ -130,7 +145,7 @@ const Navbar = () => {
                   inputProps={{ "aria-label": "search" }}
                 />
               </div>
-            </div>
+            </div> */}
             <div className={classes.user}>
               <UserMenu />
             </div>

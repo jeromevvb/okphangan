@@ -38,7 +38,9 @@ const ContactCard: React.FC<ContactCardProps> = ({ business }) => {
               fullWidth
               variant="contained"
               color="primary"
-              href={`/login?redirectBusiness=${business.name}`}
+              //?redirectBusiness=${business.name}
+              //TODO: FIX REDIRECT BUSINESS
+              href={`/login`}
             >
               LOGIN
             </Button>

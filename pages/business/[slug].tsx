@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -47,52 +47,48 @@ const Business: React.FC<PlaceProps> = (props) => {
       ? business.photos.map((photoUrl) => photoUrl)
       : [];
 
-  console.log(user);
-
   const isOwner = business.id === user?.business?.id;
 
   return (
     <Page title={business.name} description={business.description}>
       <Navbar />
       <Container>
-        <Box
-          display="flex"
-          marginBottom={4}
-          alignContent="center"
-          alignItems="center"
-          marginTop={4}
-          flexWrap="wrap"
-        >
-          <BusinessHeader business={business} />
-          <Box flex="1" />
-          <Box>
-            {isOwner && (
-              <Button
-                variant="contained"
-                color="primary"
-                href={`/business/edit/${business.id}`}
-                startIcon={<FaEdit />}
-              >
-                Edit my page
-              </Button>
-            )}
-            {!isOwner && (
-              <Tooltip
-                title="Get notified when this page has some nice deals for you"
-                arrow
-              >
-                <div>
+        <Box marginBottom={4} marginTop={4}>
+          <BusinessHeader
+            business={business}
+            rightAction={
+              <Fragment>
+                {isOwner && (
                   <Button
                     variant="contained"
-                    color="secondary"
-                    startIcon={<FaRegHeart />}
+                    fullWidth
+                    color="primary"
+                    href={`/business/edit/${business.id}`}
+                    startIcon={<FaEdit />}
                   >
-                    FOLLOW
+                    Edit my page
                   </Button>
-                </div>
-              </Tooltip>
-            )}
-          </Box>
+                )}
+                {!isOwner && (
+                  <Tooltip
+                    title="Get notified when this page has some nice deals for you"
+                    arrow
+                  >
+                    <div>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<FaRegHeart />}
+                      >
+                        FOLLOW
+                      </Button>
+                    </div>
+                  </Tooltip>
+                )}
+              </Fragment>
+            }
+          />
         </Box>
 
         <Grid container spacing={3}>

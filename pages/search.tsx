@@ -2,12 +2,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Page from "@components/Page";
 import {
-  Avatar,
   Box,
   capitalize,
   Chip,
   Container,
   Grid,
+  LinearProgress,
   makeStyles,
 } from "@material-ui/core";
 import SearchBar from "@components/SearchBar/SearchBar";
@@ -16,7 +16,6 @@ import { BusinessModel, searchBusiness } from "@models/business";
 import Card from "@components/Card";
 import BusinessAvatar from "@components/BusinessAvatar";
 import Subtitle from "@components/Subtitle";
-import Title from "@components/Title";
 import BodyText from "@components/BodyText";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const router = useRouter();
+  const [searching, setSearching] = useState<boolean>(false);
   const [results, setResults] = useState<BusinessModel[]>([]);
   const query = router.query?.str as string;
 
@@ -44,8 +44,10 @@ const Home = () => {
     const doRequest = async () => {
       if (!query) return;
 
+      setSearching(true);
       const response = await searchBusiness(query.toLowerCase());
       setResults(response);
+      setSearching(false);
     };
 
     doRequest();
@@ -72,6 +74,7 @@ const Home = () => {
       <Container maxWidth={"md"}>
         <Box marginTop={4}>
           <SearchBar defaultSearch={query} onChange={handleSearch} />
+          {searching && <LinearProgress />}
         </Box>
         <Box marginTop={4}>
           {results.length > 0 && (
@@ -79,7 +82,7 @@ const Home = () => {
               <Box marginTop={2}>
                 <Grid container spacing={2}>
                   {results.map((business) => (
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid key={business.id} item xs={12} sm={6} md={4}>
                       <BusinessCard business={business} />
                     </Grid>
                   ))}
@@ -87,7 +90,7 @@ const Home = () => {
               </Box>
             </Fragment>
           )}
-          {results.length === 0 && (
+          {results.length === 0 && query && (
             <Box marginTop={4} textAlign="center">
               <Subtitle>We haven't found what you're looking for =(</Subtitle>
             </Box>

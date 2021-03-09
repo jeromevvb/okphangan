@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   logo: {
     borderRadius: "100%",
-    border: `3px solid ${theme.palette.primary.main} !important`,
+    // border: `3px solid ${theme.palette.primary.main} !important`,
     objectFit: "cover",
     height: 125,
     width: 125,
@@ -31,24 +31,22 @@ const BusinessAvatar: React.FC<BusinessAvatarProps> = ({ business }) => {
   const logo = business.logo instanceof Array ? business.logo[0] : null;
 
   return (
-    <div>
-      <Box className={classes.logoContainer}>
-        {logo && (
-          <Image
-            className={classes.logo}
-            src={logo}
-            alt={`Logo from ${business.name}`}
-            width={125}
-            height={125}
-          />
-        )}
-        {!logo && (
-          <Avatar classes={{ root: classes.businessholderLogo }}>
-            {business.name.substring(0, 2)}
-          </Avatar>
-        )}
-      </Box>
-    </div>
+    <Box className={classes.logoContainer}>
+      {logo && (
+        <Image
+          className={classes.logo}
+          src={logo}
+          alt={`Logo from ${business.name}`}
+          width={125}
+          height={125}
+        />
+      )}
+      {!logo && (
+        <Avatar classes={{ root: classes.businessholderLogo }}>
+          {business.name.substring(0, 2)}
+        </Avatar>
+      )}
+    </Box>
   );
 };
 
