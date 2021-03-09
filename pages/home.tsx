@@ -11,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
   colorPrimary: {
     color: theme.palette.primary.main,
   },
+  container: {
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "80%",
+    },
+  },
 }));
 
 const Home = () => {
@@ -28,7 +36,12 @@ const Home = () => {
       description="We unite Phangan's people in order to create a better future for all of us"
     >
       <WelcomeLayout>
-        <Box textAlign="center" margin="auto" paddingTop={8} maxWidth={"80%"}>
+        <Box
+          textAlign="center"
+          margin="auto"
+          paddingTop={8}
+          className={classes.container}
+        >
           <Box marginBottom={2}>
             <Title variant={"h3"}>
               Explore the <span className={classes.colorPrimary}>paradise</span>
