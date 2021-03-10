@@ -1,38 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Page from "@components/Page";
-import {
-  Box,
-  capitalize,
-  Chip,
-  Container,
-  Grid,
-  LinearProgress,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, Container, Grid, LinearProgress } from "@material-ui/core";
 import SearchBar from "@components/SearchBar/SearchBar";
 import Navbar from "@components/Navbar";
 import { BusinessModel, searchBusiness } from "@models/business";
 import Card from "@components/Card";
-import BusinessAvatar from "@components/BusinessAvatar";
-import Subtitle from "@components/Subtitle";
 import BodyText from "@components/BodyText";
-
-const useStyles = makeStyles((theme) => ({
-  colorPrimary: {
-    color: theme.palette.primary.main,
-  },
-  cardRoot: {
-    "&:hover": {
-      // border: `1px solid ${theme.palette.primary.main}`,
-      cursor: "pointer",
-      boxShadow: "0px 1px 5px #d7d7d7",
-    },
-  },
-}));
+import BusinessCard from "@components/BusinessCard";
+import Subtitle from "@components/Subtitle";
 
 const Home = () => {
-  const classes = useStyles();
   const router = useRouter();
   const [searching, setSearching] = useState<boolean>(false);
   const [results, setResults] = useState<BusinessModel[]>([]);
@@ -98,36 +76,6 @@ const Home = () => {
         </Box>
       </Container>
     </Page>
-  );
-};
-
-const BusinessCard: React.FC<{ business: BusinessModel }> = ({ business }) => {
-  const router = useRouter();
-  const classes = useStyles();
-
-  const handleClick = () => {
-    return router.push(`/business/${business.slug}`);
-  };
-
-  return (
-    <Card onClick={handleClick} className={classes.cardRoot}>
-      <Box textAlign="center" marginTop={1}>
-        <BusinessAvatar business={business} />
-
-        <Subtitle strong>{business.name.toUpperCase()}</Subtitle>
-        <BodyText>
-          {capitalize(business.type)} - {capitalize(business.category)}
-        </BodyText>
-      </Box>
-      <Box marginTop={2}>
-        {business.tags instanceof Array &&
-          business.tags.map((tag: string) => (
-            <Box key={tag} margin={0.2} display="inline-flex">
-              <Chip label={tag.toUpperCase()} size="small" />
-            </Box>
-          ))}
-      </Box>
-    </Card>
   );
 };
 

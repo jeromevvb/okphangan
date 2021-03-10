@@ -6,6 +6,8 @@ import Page from "@components/Page";
 import Title from "@components/Title";
 import { Box, makeStyles } from "@material-ui/core";
 import SearchBar from "@components/SearchBar/SearchBar";
+import Subtitle from "@components/Subtitle";
+import RecentlyJoined from "widgets/home/RecentlyJoined";
 
 const useStyles = makeStyles((theme) => ({
   colorPrimary: {
@@ -40,6 +42,7 @@ const Home = () => {
           textAlign="center"
           margin="auto"
           paddingTop={8}
+          paddingBottom={8}
           className={classes.container}
         >
           <Box marginBottom={2}>
@@ -47,7 +50,13 @@ const Home = () => {
               Explore the <span className={classes.colorPrimary}>paradise</span>
             </Title>
           </Box>
-          <SearchBar onChange={handleSearch}></SearchBar>
+          <SearchBar onChange={handleSearch} />
+        </Box>
+        <Box>
+          <Title>Recently joined</Title>
+          <Box marginTop={4}>
+            <RecentlyJoined />
+          </Box>
         </Box>
       </WelcomeLayout>
     </Page>

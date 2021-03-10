@@ -102,4 +102,18 @@ const searchBusiness = async (search:string):Promise<Array<BusinessModel>> => {
 }
 
 
-export {updateBusiness,createBusiness,searchBusiness}
+const getRecentlyJoined = async():Promise<Array<BusinessModel>> => {
+
+  const request = await firebase
+    .firestore()
+    .collection("businesses")
+    .orderBy('createdAt', 'desc')
+    .limit(6)
+    .get()
+
+
+    return request.docs.map(doc=>doc.data() as BusinessModel);
+}
+
+
+export {updateBusiness,createBusiness,searchBusiness, getRecentlyJoined}
