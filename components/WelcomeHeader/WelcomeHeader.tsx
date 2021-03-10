@@ -1,5 +1,6 @@
 import useAuth from "@auth/useAuth";
 import Button from "@components/Button";
+import useMediaQuery from "@hooks/useMediaQuery";
 
 import { Box, makeStyles } from "@material-ui/core";
 import Image from "next/image";
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
   const { showLoginButton = true } = props;
   const classes = useStyles();
+  const isXs = useMediaQuery("xs");
   const { user } = useAuth();
 
   return (
@@ -29,16 +31,21 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
         <Image
           src="/images/logo.png"
           alt="Logo OKPhangan"
-          width={200}
+          width={180}
           height={50}
         />
       </div>
       {showLoginButton && !user && (
-        <div>
-          <Button href="/login" variant="contained" color="primary">
+        <Box marginLeft={1}>
+          <Button
+            size={isXs ? "small" : "medium"}
+            href="/login"
+            variant="contained"
+            color="primary"
+          >
             Join the community
           </Button>
-        </div>
+        </Box>
       )}
       {user && (
         <Box>

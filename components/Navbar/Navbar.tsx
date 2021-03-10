@@ -108,14 +108,6 @@ const Navbar = () => {
       <Toolbar disableGutters>
         <Container>
           <div className={classes.root}>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-            >
-              <MdMenu />
-            </IconButton>
             <div className={classes.title}>
               <Box onClick={handleClickLogo}>
                 <Image
