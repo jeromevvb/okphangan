@@ -106,7 +106,7 @@ const EditBusiness = () => {
 
   return (
     <UserAuthGranted role="business">
-      <Page title={business.name}>
+      <Page title={business.name} robots="noindex, nofollow">
         <Navbar />
         <Container>
           <Box marginBottom={4} marginTop={4}>
