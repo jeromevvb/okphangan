@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   left: {
     flex: "60%",
     minHeight: "100%",
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
   },
   right: {
     borderLeft: `5px solid ${theme.palette.grey[900]}`,

@@ -5,30 +5,35 @@ import Image from "next/image";
 
 export interface BusinessAvatarProps {
   business: BusinessModel;
+  size?: "small" | "large";
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
   logoContainer: {
     display: "inline-block",
   },
-  businessholderLogo: {
-    width: 125,
+  businessholderLogo: (size) => ({
+    width: size === "large" ? 125 : 90,
+    height: size === "large" ? 125 : 90,
     textTransform: "uppercase",
     borderRadius: "100%",
-    height: 125,
-  },
+  }),
   logo: {
     borderRadius: "100%",
     // border: `3px solid ${theme.palette.primary.main} !important`,
     objectFit: "cover",
-    height: 125,
-    width: 125,
   },
 }));
 
-const BusinessAvatar: React.FC<BusinessAvatarProps> = ({ business }) => {
-  const classes = useStyles();
+const BusinessAvatar: React.FC<BusinessAvatarProps> = ({
+  business,
+  size = "large",
+}) => {
+  const classes = useStyles({ size });
   const logo = business.logo instanceof Array ? business.logo[0] : null;
+
+  const dimensions =
+    size === "large" ? { width: 125, height: 125 } : { width: 80, height: 80 };
 
   return (
     <Box className={classes.logoContainer}>
@@ -37,8 +42,7 @@ const BusinessAvatar: React.FC<BusinessAvatarProps> = ({ business }) => {
           className={classes.logo}
           src={logo}
           alt={`Logo from ${business.name}`}
-          width={125}
-          height={125}
+          {...dimensions}
         />
       )}
       {!logo && (
