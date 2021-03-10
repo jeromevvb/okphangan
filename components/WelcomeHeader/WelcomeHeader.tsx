@@ -49,7 +49,7 @@ const WelcomeHeader: React.FC<WelcomeHeaderProps> = (props) => {
       )}
       {user && (
         <Box>
-          <UserMenu onlyAvatar></UserMenu>
+          <UserMenu></UserMenu>
         </Box>
       )}
     </div>

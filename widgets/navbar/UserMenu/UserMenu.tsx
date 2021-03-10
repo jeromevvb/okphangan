@@ -45,6 +45,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onlyAvatar = false }) => {
       <IconButton
         ref={avatarRef}
         color="inherit"
+        size="small"
         onClick={() => setOpenMenu(true)}
       >
         <UserAvatar user={user} />
@@ -68,7 +69,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ onlyAvatar = false }) => {
       >
         {user && (
           <div>
-            {user.business && (
+            {user.business && user.business.slug && (
               <div>
                 <MenuItem onClick={handleClickBusiness}>
                   <ListItemIcon>

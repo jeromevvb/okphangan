@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       flex: "1 1 100%",
+      marginRight: 0,
     },
   },
   headerRightAction: {
