@@ -1,22 +1,10 @@
 import React, { Fragment } from "react";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetStaticPaths,
-  GetStaticProps,
-} from "next";
+import { GetServerSidePropsContext } from "next";
 import firebase from "@services/firebase";
 import Page from "@components/Page";
-import { BusinessModel } from "@models/business";
+import { addFollower, BusinessModel } from "@models/business";
 import Navbar from "@components/Navbar";
-import {
-  Box,
-  Container,
-  Grid,
-  makeStyles,
-  Theme,
-  Tooltip,
-} from "@material-ui/core";
+import { Box, Container, Grid, Tooltip } from "@material-ui/core";
 import Subtitle from "@components/Subtitle";
 import Button from "@components/Button";
 import { FaEdit, FaRegHeart } from "react-icons/fa";
@@ -26,6 +14,8 @@ import Geolocation from "widgets/business/Geolocation";
 import PhotosLightbox from "widgets/business/PhotosLightbox";
 import Card from "@components/Card";
 import ContactCard from "widgets/business/ContactCard";
+import toast from "react-hot-toast";
+import useDocument from "@hooks/useDocument";
 
 export interface PlaceProps {
   business: BusinessModel;
@@ -41,13 +31,22 @@ type Params = {
 const Business: React.FC<PlaceProps> = (props) => {
   const { business } = props;
   const { user } = useAuth();
+  // const {business} = useDocument();
 
-  console.log(user);
+  console.log(business);
 
   const photos: Array<string> =
     business.photos instanceof Array
       ? business.photos.map((photoUrl) => photoUrl)
       : [];
+
+  const handleClickFollow = async () => {
+    if (!user) return false;
+
+    await addFollower(business.id, user.uid);
+
+    toast.success("You're now following this page");
+  };
 
   const isOwner = business.id === user?.business?.id;
 
@@ -78,6 +77,7 @@ const Business: React.FC<PlaceProps> = (props) => {
                   >
                     <div>
                       <Button
+                        onClick={handleClickFollow}
                         fullWidth
                         variant="contained"
                         color="secondary"

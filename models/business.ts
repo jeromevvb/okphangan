@@ -115,5 +115,17 @@ const getRecentlyJoined = async():Promise<Array<BusinessModel>> => {
     return request.docs.map(doc=>doc.data() as BusinessModel);
 }
 
+const addFollower = async (businessId:string, followerId:string) => {
 
-export {updateBusiness,createBusiness,searchBusiness, getRecentlyJoined}
+  const request = await firebase.firestore()
+  .collection("businesses")
+  .doc(businessId)
+  .update({
+    followers: firebase.firestore.FieldValue.arrayUnion(followerId)
+  })
+
+  return true;
+}
+
+
+export {updateBusiness,createBusiness,searchBusiness, getRecentlyJoined, addFollower}

@@ -2,7 +2,7 @@ import BusinessCard from "@components/BusinessCard";
 import useAsync from "@hooks/useAsync";
 import { Box, CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import { getRecentlyJoined } from "@models/business";
-import React, { Fragment } from "react";
+import React from "react";
 
 export interface RecentlyJoinedProps {}
 
@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RecentlyJoined: React.FC<RecentlyJoinedProps> = ({}) => {
+const RecentlyJoined: React.FC<RecentlyJoinedProps> = (props) => {
   const { result, error, loading } = useAsync(getRecentlyJoined);
   const classes = useStyles();
-  console.log(result);
 
   if (loading) return <CircularProgress></CircularProgress>;
+  if (error) return <></>;
 
   return (
     <Box display="flex" alignItems="stretch" className={classes.container}>
